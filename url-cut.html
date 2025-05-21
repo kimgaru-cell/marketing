@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URL 단축기 - Fassto Marketing</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+   
+  </style>
+</head>
+  
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+  <nav class="bg-gray-100 border-b border-gray-300 mb-6">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html">
+        <img src="파스토 로고.png" alt="파스토 로고" class="h-8">
+      </a>
+      <button id="menu-toggle" class="block md:hidden text-gray-700 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+      <ul id="menu" class="transform transition-transform duration-300 ease-in-out md:flex flex-col md:flex-row md:items-center md:space-x-6 space-y-2 md:space-y-0 mt-4 md:mt-0 w-full md:w-auto">
+        <li><a href="notice-tool.html" class="block text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition">공지 이미지 생성기</a></li>
+        <li><a href="coordinate-finder.html" class="block text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition">좌표 찾기 도구</a></li>
+        <li><a href="url-cut.html" class="block text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-md transition">URL 단축기</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="flex-grow container mx-auto p-4 max-w-2xl">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold mb-4 text-center">URL 단축기</h1>
+      <div class="mb-6">
+        <label class="block mb-2 text-gray-700 font-medium">URL 입력</label>
+        <div class="flex">
+          <input id="url-input" type="url" placeholder="https://example.com" class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button id="shorten-btn" class="px-4 py-2 bg-green-600 text-white font-medium rounded-r-lg hover:bg-green-700">단축</button>
+        </div>
+      </div>
+      <div id="result-container" class="hidden mt-6">
+        <label class="block mb-2 text-gray-700 font-medium">생성된 단축 URL</label>
+        <div class="flex items-center space-x-3">
+          <a id="short-url" href="#" target="_blank" class="text-green-600 break-all"></a>
+          <button id="copy-btn" class="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300">복사</button>
+          <span id="copy-feedback" class="copy-feedback text-sm text-green-600">복사 완료!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-200 text-center p-4 mt-auto">
+    <p class="text-sm text-gray-600">© 2025 Fassto Marketing. All Rights Reserved.</p>
+  </footer>
+  
+  <script>
+    const urlInput = document.getElementById('url-input');
+    const shortenBtn = document.getElementById('shorten-btn');
+    const resultContainer = document.getElementById('result-container');
+    const shortUrlElement = document.getElementById('short-url');
+    const copyBtn = document.getElementById('copy-btn');
+    const copyFeedback = document.getElementById('copy-feedback');
+
+    async function shortenUrl() {
+      const originalUrl = urlInput.value.trim();
+      if (!originalUrl || !/^https?:\/\//.test(originalUrl)) {
+        alert("유효한 URL을 입력해주세요.");
+        return;
+      }
+
+      const res = await fetch('/.netlify/functions/shorten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ originalUrl })
+      });
+
+      if (!res.ok) {
+        alert("단축에 실패했습니다.");
+        return;
+      }
+
+      const data = await res.json();
+      const shortUrl = `${window.location.origin}/r/${data.shortCode}`;
+
+      shortUrlElement.textContent = shortUrl;
+      shortUrlElement.href = shortUrl;
+      resultContainer.classList.remove('hidden');
+    }
+
+    function copyToClipboard() {
+      navigator.clipboard.writeText(shortUrlElement.textContent).then(() => {
+        copyFeedback.classList.add('show');
+        setTimeout(() => copyFeedback.classList.remove('show'), 2000);
+      });
+    }
+
+    shortenBtn.addEventListener('click', shortenUrl);
+    copyBtn.addEventListener('click', copyToClipboard);
+    urlInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') shortenUrl();
+    });
+  </script>
+
+  <script>
+      // --- 활성 메뉴 표시 스크립트 (추가된 부분) ---
+      document.addEventListener('DOMContentLoaded', function() {
+        // 현재 웹페이지 주소에서 파일 이름 부분만 가져옵니다. (예: "index.html", "notice-tool.html")
+        const currentPath = window.location.pathname.split('/').pop();
+        const menuLinks = document.querySelectorAll('#menu a'); // 메뉴 안의 모든 링크(<a>)를 찾습니다.
+    
+        menuLinks.forEach(link => {
+          // 각 링크가 연결된 주소(href 속성)를 가져옵니다.
+          const linkPath = link.getAttribute('href');
+    
+          // 링크 주소와 현재 페이지 파일 이름이 같으면, 그 링크에 'active-menu' 스타일을 적용합니다.
+          if (linkPath && linkPath === currentPath) {
+            link.classList.add('active-menu');
+          }
+          // 만약 홈페이지(index.html)인데 주소가 그냥 '/' 로 끝나는 경우도 처리
+          else if (currentPath === '' && linkPath === 'index.html') {
+             link.classList.add('active-menu');
+          }
+        });
+    
+        // --- 메뉴 토글 ---
+        const toggleBtn = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        if (toggleBtn && menu) {
+          toggleBtn.addEventListener('click', function () {
+            menu.classList.toggle('menu-open');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
