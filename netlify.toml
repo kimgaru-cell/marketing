@@ -1,0 +1,15 @@
+[build]
+publish = "."
+command = "npm install"
+
+[functions]
+directory = "netlify/functions"
+included_files = ["node_modules/@netlify/blobs/**"]
+
+[build.environment]
+NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/r/:code"
+  to = "/.netlify/functions/redirect?code=:code"
+  status = 200
