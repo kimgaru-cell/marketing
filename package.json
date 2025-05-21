@@ -1,5 +1,5 @@
 {
-  "name": "fassto-url-shortener",
+  "name": "url-shortener",
   "version": "1.0.0",
   "type": "commonjs",
   "dependencies": {
@@ -16,13 +16,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fassto-marketing/fassto-marketing.git"
+    "url": "git+https://github.com/kimgaru-cell/marketing-tool.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fassto-marketing/fassto-marketing/issues"
+    "url": "https://github.com/kimgaru-cell/marketing-tool/issues"
   },
-  "homepage": "https://github.com/fassto-marketing/fassto-marketing#readme"
+  "homepage": "https://github.com/kimgaru-cell/marketing-tool#readme"
 }
