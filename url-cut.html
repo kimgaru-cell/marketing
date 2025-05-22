@@ -41,6 +41,13 @@
       from, to { border-color: transparent }
       50% { border-color: #666; }
     }
+
+    @media (max-width: 500px) {
+      .typewriter {
+        max-width: 14ch;
+        animation: typing 2s steps(14, end), blink 0.7s step-end infinite;
+      }
+    }
   </style>
 
 </head>
