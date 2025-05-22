@@ -305,14 +305,13 @@
         });
     
         // --- 메뉴 토글 ---
-        const toggleBtn = document.getElementById('menu-toggle');
-        const menu = document.getElementById('menu');
-        if (toggleBtn && menu) {
-          toggleBtn.addEventListener('click', function () {
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('flex');
-          });
-        }
+          const toggleBtn = document.getElementById('menu-toggle');
+          const menu = document.getElementById('menu');
+          if (toggleBtn && menu) {
+            toggleBtn.addEventListener('click', function () {
+              menu.classList.toggle('menu-open');
+            });
+          }
     
         // ✨ 입력창 자동 포커스 & 초기화 (존재할 때만 실행)
         const urlInput = document.getElementById('url-input');
