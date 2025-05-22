@@ -16,7 +16,7 @@ body {
     position: absolute;
     top: 60px; /* 네비게이션 바 높이에 맞춰 조정 필요할 수 있음 */
     left: 0;
-    right: 0;
+    width: 100%;
     background-color: #f3f4f6; /* 메뉴 배경색 */
     border-bottom: 1px solid #d1d5db; /* 메뉴 하단 선 */
     padding: 1rem; /* 메뉴 안쪽 여백 */
@@ -28,6 +28,7 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    display: block; /* 항상 block 상태여야 transition 작동함 */
   }
 
   /* 슬라이드 인 상태 */
@@ -35,15 +36,6 @@ body {
     transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
-  }
-}
-
-  /* 모바일 화면일 때 flex 클래스가 붙으면 메뉴가 보이도록 설정 */
-  @media (max-width: 767px) {
-    #menu.flex {
-      max-height: 500px;
-      opacity: 1;
-    }
   }
   
   #menu li {
