@@ -92,10 +92,13 @@ body {
 }
 
 #cursor {
-  font-size: 2rem;
-  color: #02855B;
+  font-size: 2rem;           /* 글자 크기와 맞춤 */
+  color: #333;            /* 커서 색상 (원하는 색상 코드로 변경 가능) */
   animation: blink-caret 0.7s steps(1) infinite;
   font-weight: normal;
+  vertical-align: -0.1em;    /* 커서가 글자와 더 잘 맞게 아래로 약간 내림 */
+  /* 아래 줄을 추가하면 커서 두께를 더 두껍게 할 수 있습니다 */
+  font-family: Pretendard, 'Courier New', Courier, monospace;
 }
 
 @media (max-width: 767px) {
