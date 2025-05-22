@@ -26,8 +26,17 @@
       border-right: 2px solid #666;
       white-space: nowrap;
       overflow: hidden;
+      max-width: 100%; /* 모바일에서 넘치지 않게 제한 */
       animation: typing 1.8s steps(25, end), blink .7s step-end infinite;
     }
+
+    /* 모바일 화면일 때 애니메이션 글자 수 줄이기 */
+    @media (max-width: 640px) {
+      .typewriter {
+        animation: typing 2s steps(15, end), blink 0.7s step-end infinite;
+      }
+    }
+    
     @keyframes typing {
       from { width: 0 }
       to { width: 17ch; }
