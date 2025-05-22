@@ -23,11 +23,21 @@ body {
     z-index: 50; /* 다른 요소들 위에 보이도록 */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
 
-    max-height: 0;
-    overflow: hidden;
+    /* 슬라이드 애니메이션 기본 상태 (숨김) */
+    transform: translateX(-100%);
     opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.4s ease;
+    pointer-events: none;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
+
+  /* 슬라이드 인 상태 */
+  #menu.menu-open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
   /* 모바일 화면일 때 flex 클래스가 붙으면 메뉴가 보이도록 설정 */
   @media (max-width: 767px) {
     #menu.flex {
