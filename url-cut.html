@@ -26,11 +26,7 @@
       border-right: 2px solid #666;
       white-space: nowrap;
       overflow: hidden;
-      width: 100%;             /* 너비를 100%로 고정 */
-      max-width: 17ch;         /* 애니메이션 기준 글자 수 */
       animation: typing 2s steps(17, end), blink 0.7s step-end infinite;
-      box-sizing: border-box;  /* padding 등 포함해서 계산 */
-      text-align: left;        /* 필요 시 중앙 정렬 해제 */
     }
     
     @keyframes typing {
@@ -42,12 +38,6 @@
       50% { border-color: #666; }
     }
 
-    @media (max-width: 500px) {
-      .typewriter {
-        max-width: 14ch;
-        animation: typing 2s steps(14, end), blink 0.7s step-end infinite;
-      }
-    }
   </style>
 
 </head>
