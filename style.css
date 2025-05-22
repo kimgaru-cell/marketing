@@ -83,7 +83,17 @@ body {
 /* url-cut.html 스타일 */
 .copy-feedback { visibility: hidden; opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
 .copy-feedback.show { visibility: visible; opacity: 1; }
-.typewriter { font-size: 1.2rem; word-break: keep-all; white-space: normal; }
+.typewriter {
+  font-size: 2rem;  /* 데스크탑에서는 크게 */
+  word-break: keep-all;
+  white-space: normal;
+}
+
+@media (max-width: 767px) {
+  .typewriter {
+    font-size: 1.2rem; /* 모바일에서는 작게 */
+  }
+}
 .relative { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
 
 /* index.html 스타일 */
