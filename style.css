@@ -23,19 +23,16 @@ body {
     z-index: 50; /* 다른 요소들 위에 보이도록 */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
 
-    /* 기본 상태: 메뉴를 위쪽에 숨기기 + 투명 */
-    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
     opacity: 0;
-    pointer-events: none;
-    
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* 부드럽게 움직이는 효과 (0.3초) */
+    transition: max-height 0.4s ease, opacity 0.4s ease;
   }
   /* 모바일 화면일 때 flex 클래스가 붙으면 메뉴가 보이도록 설정 */
   @media (max-width: 767px) {
     #menu.flex {
-      transform: translateY(0);
+      max-height: 500px;
       opacity: 1;
-      pointer-events: auto;
     }
   }
   
