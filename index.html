@@ -310,9 +310,15 @@
         if (toggleBtn && menu) {
           toggleBtn.addEventListener('click', function () {
             menu.classList.toggle('hidden');
-        });
+          });
+        }
+
+        // ✨ 입력창 자동 포커스 & 초기화 (존재할 때만 실행)
+        const urlInput = document.getElementById('url-input');
+        urlInput.focus();
+        urlInput.value = '';
       }
     });
-    </script>
+  </script>
 </body>
 </html>
