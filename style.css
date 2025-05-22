@@ -84,6 +84,31 @@ body {
 .copy-feedback { visibility: hidden; opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
 .copy-feedback.show { visibility: visible; opacity: 1; }
 .relative { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+#typewriter {
+  font-size: 2rem;
+  white-space: pre;
+  font-weight: bold;
+  color: #4f46e5; /* 인디고-700 */
+}
+
+#cursor {
+  font-size: 2rem;
+  color: #02855B;
+  animation: blink-caret 0.7s steps(1) infinite;
+  font-weight: normal;
+}
+
+@media (max-width: 767px) {
+  #typewriter, #cursor {
+    font-size: 1.2rem;
+  }
+}
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
 
 /* index.html 스타일 */
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
