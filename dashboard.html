@@ -28,7 +28,17 @@
   
 <body class="bg-gray-50 font-sans">
   <div class="container mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold text-indigo-700 mb-6">📊 단축 URL 대시보드</h1>
+    <h1 class="text-3xl font-bold text-indigo-700 mb-6">📊 단축 URL 대시보드</h1>]
+      
+      <!-- [검색/필터/다운로드 UI] -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        <input type="date" id="start-date" class="border rounded px-2 py-1">
+        <input type="date" id="end-date" class="border rounded px-2 py-1">
+        <input type="text" id="search-input" placeholder="메모/URL 검색" class="border rounded px-2 py-1">
+        <button id="search-btn" class="bg-indigo-500 text-white px-3 py-1 rounded">검색</button>
+        <button id="export-btn" class="bg-green-600 text-white px-3 py-1 rounded">엑셀 다운로드</button>
+      </div>
+
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white rounded shadow">
         <thead>
@@ -58,11 +68,49 @@
         tr.className = "border-t";
         tr.innerHTML = `
           <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
-          <td class="px-4 py-2 text-indigo-600"><a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a></td>
+          <td class="px-4 py-2 text-indigo-600">
+            <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
+            <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
+          </td>
           <td class="px-4 py-2 break-all">${item.original_url}</td>
           <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
           <td class="px-4 py-2">${item.memo || ''}</td>
+          <td>
+            <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
+          </td>
         `;
+
+          // 복사 기능
+            function copyUrl(url) {
+              navigator.clipboard.writeText(url).then(() => {
+                alert('복사되었습니다!');
+              });
+            }
+            
+            // 삭제 기능 (예시: 실제로는 서버에 삭제 요청 필요)
+            function deleteUrl(shortCode) {
+              if (confirm('정말 삭제하시겠습니까?')) {
+                // 실제 삭제 API 호출 필요
+                alert('삭제 기능은 서버 연동 후 구현하세요.');
+                // 삭제 후 fetchUrls()로 새로고침
+              }
+            }
+            
+            // 엑셀 다운로드 기능 (간단 CSV)
+            document.getElementById('export-btn').addEventListener('click', function() {
+              const rows = [];
+              document.querySelectorAll('#url-table-body tr').forEach(tr => {
+                const cells = Array.from(tr.querySelectorAll('td')).map(td => `"${td.innerText.replace(/"/g, '""')}"`);
+                rows.push(cells.join(','));
+              });
+              const csv = rows.join('\n');
+              const blob = new Blob([csv], {type: 'text/csv'});
+              const a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = 'url_dashboard.csv';
+              a.click();
+            });
+          
         tbody.appendChild(tr);
       });
     }
@@ -130,5 +178,50 @@
   });
   </script>
     
+  <script>
+  document.getElementById('search-btn').addEventListener('click', function() {
+      const startDate = document.getElementById('start-date').value;
+      const endDate = document.getElementById('end-date').value;
+      const keyword = document.getElementById('search-input').value.toLowerCase();
+    
+      // 기존 fetchUrls()에서 data를 받아와서 필터링
+      fetch('/.netlify/functions/fetch-urls')
+        .then(res => res.json())
+        .then(data => {
+          const filtered = data.filter(item => {
+            // 날짜 필터
+            const created = new Date(item.created_at).toISOString().slice(0,10);
+            if (startDate && created < startDate) return false;
+            if (endDate && created > endDate) return false;
+            // 키워드(메모/URL) 필터
+            if (keyword && !(item.memo?.toLowerCase().includes(keyword) || item.original_url?.toLowerCase().includes(keyword))) return false;
+            return true;
+          });
+    
+          // 테이블 다시 그리기
+          const tbody = document.getElementById('url-table-body');
+          tbody.innerHTML = '';
+          filtered.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = "border-t";
+            tr.innerHTML = `
+              <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
+              <td class="px-4 py-2 text-indigo-600">
+                <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
+                <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
+              </td>
+              <td class="px-4 py-2 break-all">${item.original_url}</td>
+              <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
+              <td class="px-4 py-2">${item.memo || ''}</td>
+              <td>
+                <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        });
+    });
+  </script>
+            
 </body>
 </html>
