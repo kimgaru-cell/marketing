@@ -70,7 +70,7 @@ body {
 /* 현재 보고 있는 페이지 메뉴에 적용될 스타일 */
 #menu a.active-menu {
   font-weight: bold; /* 굵은 글씨 */
-  color: #00855B; /* Fassto 녹색 */
+  color: #1d4870; /* Fassto 녹색 */
 }
 
 /* --- 기타 공통 스타일 --- */
