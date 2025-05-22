@@ -86,6 +86,7 @@
             복사
           </button>
           <span id="copy-feedback" class="copy-feedback text-sm text-indigo-600 animate__animated animate__fadeIn">✔ 복사 완료!</span>
+          <p id="click-count" class="text-sm text-gray-500 mt-2">👁️ 클릭 수: <span>0</span></p>
         </div>
       </div>
     </div>
@@ -145,6 +146,23 @@
     urlInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') shortenUrl();
     });
+
+    const shortCode = data.shortCode;
+
+    const clickRes = await fetch('/.netlify/functions/get-clicks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ shortCode })
+    });
+    
+    if (clickRes.ok) {
+      const clickData = await clickRes.json();
+      const clickCountElement = document.getElementById('click-count').querySelector('span');
+      clickCountElement.textContent = clickData.count;
+    }
+
   </script>
 
   <script>
