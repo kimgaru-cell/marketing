@@ -129,6 +129,7 @@
 
       shortUrlElement.textContent = shortUrl;
       shortUrlElement.href = shortUrl;
+      fetchClickCount(data.shortCode);
       shortUrlElement.setAttribute('target', '_blank');
       shortUrlElement.setAttribute('rel', 'noopener noreferrer'); // 보안 강화
       resultContainer.classList.remove('hidden');
@@ -147,20 +148,21 @@
       if (e.key === 'Enter') shortenUrl();
     });
 
-    const shortCode = data.shortCode;
-
-    const clickRes = await fetch('/.netlify/functions/get-clicks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ shortCode })
-    });
+    async function fetchClickCount(shortCode) {
+      const res = await fetch('/.netlify/functions/get-clicks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ shortCode })
+      });
     
-    if (clickRes.ok) {
-      const clickData = await clickRes.json();
-      const clickCountElement = document.getElementById('click-count').querySelector('span');
-      clickCountElement.textContent = clickData.count;
+      if (!res.ok) return;
+    
+      const data = await res.json();
+      const countElement = document.getElementById('click-count');
+      const container = document.getElementById('click-count-container');
+    
+      countElement.textContent = data.count || 0;
+      container.classList.remove('hidden');
     }
 
   </script>
