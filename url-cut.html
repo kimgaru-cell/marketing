@@ -74,6 +74,10 @@
           <span id="copy-feedback" class="copy-feedback text-sm text-indigo-600 animate__animated animate__fadeIn">✔ 복사 완료!</span>
           <p id="click-count" class="text-sm text-gray-500 mt-2">👁️ 클릭 수: <span>0</span></p>
         </div>
+        <div id="dashboard-link" style="display:none; margin-top:15px;">
+          <p class="text-green-600 font-bold mb-2">🎉 단축 완료!</p>
+          <a href="dashboard.html" class="cta-button">대시보드에서 확인하기</a>
+        </div>
       </div>
     </div>
   </main>
@@ -91,6 +95,9 @@
     const copyFeedback = document.getElementById('copy-feedback');
 
     async function shortenUrl() {
+      // 1. '단축 완료' 메시지와 버튼을 항상 먼저 숨김
+      document.getElementById('dashboard-link').style.display = 'none';
+      
       const originalUrl = urlInput.value.trim();
       if (!originalUrl || !/^https?:\/\//.test(originalUrl)) {
         alert("유효한 URL을 입력해주세요.");
@@ -119,6 +126,8 @@
       shortUrlElement.setAttribute('target', '_blank');
       shortUrlElement.setAttribute('rel', 'noopener noreferrer'); // 보안 강화
       resultContainer.classList.remove('hidden');
+      
+      document.getElementById('dashboard-link').style.display = 'block';
     }
 
     function copyToClipboard() {
