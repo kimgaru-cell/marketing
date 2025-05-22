@@ -25,8 +25,7 @@
       </button>
     </div>
   </nav>
-  
-<body class="bg-gray-50 font-sans">
+
   <div class="container mx-auto px-4 py-10">
     <h1 class="text-3xl font-bold text-indigo-700 mb-6">📊 단축 URL 대시보드</h1>
       
@@ -57,6 +56,47 @@
     </div>
   </div>
 
+   <script>
+  function copyUrl(url) {
+    navigator.clipboard.writeText(url).then(() => {
+      alert('복사되었습니다!');
+    });
+  }
+
+  function deleteUrl(shortCode) {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      alert('삭제 기능은 서버 연동 후 구현하세요.');
+    }
+  }
+
+  async function fetchUrls() {
+    const res = await fetch('/.netlify/functions/fetch-urls');
+    const data = await res.json();
+    const tbody = document.getElementById('url-table-body');
+
+    data.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.className = "border-t";
+      tr.innerHTML = `
+        <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
+        <td class="px-4 py-2 text-indigo-600">
+          <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
+          <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
+        </td>
+        <td class="px-4 py-2 break-all">${item.original_url}</td>
+        <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
+        <td class="px-4 py-2">${item.memo || ''}</td>
+        <td>
+          <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  fetchUrls();
+</script>
+
   <script>
     async function fetchUrls() {
       const res = await fetch('/.netlify/functions/fetch-urls');
@@ -79,44 +119,7 @@
             <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
           </td>
         `;
-
-          // 복사 기능
-            function copyUrl(url) {
-              navigator.clipboard.writeText(url).then(() => {
-                alert('복사되었습니다!');
-              });
-            }
-            
-            // 삭제 기능 (예시: 실제로는 서버에 삭제 요청 필요)
-            function deleteUrl(shortCode) {
-              if (confirm('정말 삭제하시겠습니까?')) {
-                // 실제 삭제 API 호출 필요
-                alert('삭제 기능은 서버 연동 후 구현하세요.');
-                // 삭제 후 fetchUrls()로 새로고침
-              }
-            }
-            
-            // 엑셀 다운로드 기능 (간단 CSV)
-            document.getElementById('export-btn').addEventListener('click', function() {
-              const rows = [];
-              document.querySelectorAll('#url-table-body tr').forEach(tr => {
-                const cells = Array.from(tr.querySelectorAll('td')).map(td => `"${td.innerText.replace(/"/g, '""')}"`);
-                rows.push(cells.join(','));
-              });
-              const csv = rows.join('\n');
-              const blob = new Blob([csv], {type: 'text/csv'});
-              const a = document.createElement('a');
-              a.href = URL.createObjectURL(blob);
-              a.download = 'url_dashboard.csv';
-              a.click();
-            });
-          
-        tbody.appendChild(tr);
-      });
-    }
-
-    fetchUrls();
-  </script>
+    </script>
 
     <script>
     // --- 활성 메뉴 표시 스크립트 (추가된 부분) ---
