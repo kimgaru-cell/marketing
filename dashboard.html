@@ -28,6 +28,12 @@
 
   <div class="container mx-auto px-4 py-10">
     <h1 class="text-3xl font-bold text-indigo-700 mb-6">📊 단축 URL 대시보드</h1>
+
+      <!-- 클릭 통계 차트 -->
+    <div class="bg-white rounded shadow p-4 mb-6">
+      <h2 class="text-xl font-semibold mb-4 text-indigo-700">📅 날짜별 클릭 수</h2>
+      <canvas id="clickChart" height="100"></canvas>
+    </div>
       
       <!-- [검색/필터/다운로드 UI] -->
       <div class="flex flex-wrap gap-2 mb-4">
@@ -120,6 +126,50 @@
           </td>
         `;
     </script>
+    
+    <script>
+      async function fetchClickStats() {
+        const res = await fetch('/.netlify/functions/fetch-clicks-by-date');
+        const data = await res.json();
+    
+        const labels = data.map(item => item.date);
+        const clicks = data.map(item => item.click_count);
+    
+        const ctx = document.getElementById('clickChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '클릭 수',
+              data: clicks,
+              backgroundColor: 'rgba(99, 102, 241, 0.2)',
+              borderColor: 'rgba(99, 102, 241, 1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                title: { display: true, text: '날짜' }
+              },
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: '클릭 수' }
+              }
+            }
+          }
+        });
+      }
+    
+      // 페이지 로드 시 실행
+      document.addEventListener('DOMContentLoaded', fetchClickStats);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
     // --- 활성 메뉴 표시 스크립트 (추가된 부분) ---
