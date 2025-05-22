@@ -30,10 +30,13 @@ body {
     
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* 부드럽게 움직이는 효과 (0.3초) */
   }
-  #menu.menu-open { /* 'menu-open' 상태일 때 (메뉴 열렸을 때) */
-    transform: translateX(0); /* 화면 안으로 들어오도록 위치 이동 */
-    opacity: 1;
-    pointer-events: auto;
+  /* 모바일 화면일 때 flex 클래스가 붙으면 메뉴가 보이도록 설정 */
+  @media (max-width: 767px) {
+    #menu.flex {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
   
   #menu li {
