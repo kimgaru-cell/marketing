@@ -23,8 +23,8 @@ body {
     z-index: 50; /* 다른 요소들 위에 보이도록 */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
 
-    /* ✅ 모바일에서 처음에는 숨김 상태 */
-    transform: translateX(-100%); /* 기본 상태: 화면 왼쪽 밖에 숨기기 */
+    /* 기본 상태: 메뉴를 위쪽에 숨기기 + 투명 */
+    transform: translateY(-20px);
     opacity: 0;
     pointer-events: none;
     
@@ -33,7 +33,7 @@ body {
   /* 모바일 화면일 때 flex 클래스가 붙으면 메뉴가 보이도록 설정 */
   @media (max-width: 767px) {
     #menu.flex {
-      transform: translateX(0);
+      transform: translateY(0);
       opacity: 1;
       pointer-events: auto;
     }
