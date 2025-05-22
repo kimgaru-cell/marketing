@@ -6,6 +6,25 @@
   <title>URL 대시보드</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
+<body class="bg-gradient-to-br from-indigo-100 via-white to-blue-100 flex flex-col min-h-screen font-sans">
+  <nav class="bg-white bg-opacity-90 shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html">
+        <img src="로고.png" alt="로고" class="h-8">
+      </a>
+      <ul id="menu" class="hidden md:flex space-x-6">
+        <li><a href="url-cut.html" class="text-gray-700 hover:text-indigo-600 font-medium transition">URL 단축기</a></li>
+        <li><a href="dashboard.html" class="text-gray-700 hover:text-indigo-600 font-medium transition">URL 대시보드</a></li>
+      </ul>
+      <button id="menu-toggle" class="md:hidden text-gray-600 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  
 <body class="bg-gray-50 font-sans">
   <div class="container mx-auto px-4 py-10">
     <h1 class="text-3xl font-bold text-indigo-700 mb-6">📊 단축 URL 대시보드</h1>
