@@ -300,7 +300,7 @@
           }
           // 만약 홈페이지(index.html)인데 주소가 그냥 '/' 로 끝나는 경우도 처리
           else if (currentPath === '' && linkPath === 'index.html') {
-             link.classList.add('active-menu');
+            link.classList.add('active-menu');
           }
         });
     
@@ -313,13 +313,15 @@
             menu.classList.toggle('flex');
           });
         }
-
+    
         // ✨ 입력창 자동 포커스 & 초기화 (존재할 때만 실행)
         const urlInput = document.getElementById('url-input');
-        urlInput.focus();
-        urlInput.value = '';
-      }
-    });
-  </script>
+        if (urlInput) {
+          urlInput.focus();
+          urlInput.value = '';
+        }
+      });
+    </script>
+    
 </body>
 </html>
