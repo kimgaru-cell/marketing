@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
-    <script type="module">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <script type="module">
       import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
         
       const supabase = createClient(
@@ -163,12 +163,11 @@
         }
     
       async function fetchUrls() {
-          const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+          const { data: { session }, error: sessionError } = await window.supabase.auth.getSession();
           const user = session?.user;
     
           if (sessionError || !user) {
               console.error("fetchUrls: User session not found or error fetching session.", sessionError);
-              // 필요하다면 사용자에게 알림을 표시하거나 로그인 페이지로 리디렉션
               document.getElementById('url-table-body').innerHTML = '<tr><td colspan="6" class="text-center py-4">사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.</td></tr>';
               return;
           }
@@ -268,15 +267,11 @@
           }
         });
       }
-    
-      // 페이지 로드 시 실행
-      document.addEventListener('DOMContentLoaded', fetchClickStats);
+        
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-  document.getElementById('search-btn').addEventListener('click', function() {
+  document.getElementById('search-btn').addEventListener('click', async function() {
       const startDate = document.getElementById('start-date').value;
       const endDate = document.getElementById('end-date').value;
       const keyword = document.getElementById('search-input').value.toLowerCase();
@@ -352,7 +347,7 @@
 
     <script>
       document.getElementById('export-btn').addEventListener('click', async () => {
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await window.supabase.auth.getSession();
         const user = session?.user; // 올바르게 user 가져오기 
 
         if (sessionError || !user) {
