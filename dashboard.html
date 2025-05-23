@@ -42,6 +42,7 @@
         <input type="text" id="search-input" placeholder="메모/URL 검색" class="border rounded px-2 py-1">
         <button id="search-btn" class="bg-indigo-500 text-white px-3 py-1 rounded">검색</button>
         <button id="export-btn" class="bg-green-600 text-white px-3 py-1 rounded">엑셀 다운로드</button>
+        <button id="reset-btn" class="bg-gray-500 text-white px-3 py-1 rounded">전체 보기</button>
       </div>
 
     <div class="overflow-x-auto">
@@ -53,6 +54,7 @@
             <th class="px-4 py-3">원본 URL</th>
             <th class="px-4 py-3">클릭 수</th>
             <th class="px-4 py-3">메모</th>
+            <th class="px-4 py-3">삭제</th>
           </tr>
         </thead>
         <tbody id="url-table-body" class="text-gray-800 text-sm">
@@ -103,28 +105,6 @@
   fetchUrls();
 </script>
 
-  <script>
-    async function fetchUrls() {
-      const res = await fetch('/.netlify/functions/fetch-urls');
-      const data = await res.json();
-      const tbody = document.getElementById('url-table-body');
-
-      data.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.className = "border-t";
-        tr.innerHTML = `
-          <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
-          <td class="px-4 py-2 text-indigo-600">
-            <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
-            <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
-          </td>
-          <td class="px-4 py-2 break-all">${item.original_url}</td>
-          <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
-          <td class="px-4 py-2">${item.memo || ''}</td>
-          <td>
-            <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
-          </td>
-        `;
     </script>
     
     <script>
@@ -275,6 +255,43 @@
         });
     });
   </script>
+
+    <script>
+      document.getElementById('export-btn').addEventListener('click', () => {
+        fetch('/.netlify/functions/fetch-urls')
+          .then(res => res.json())
+          .then(data => {
+            const csv = data.map(row =>
+              [
+                new Date(row.created_at).toLocaleDateString(),
+                `/r/${row.short_code}`,
+                row.original_url,
+                row.clicks || 0,
+                row.memo || ''
+              ].map(v => `"${v}"`).join(',')
+            );
+            csv.unshift("생성일,단축 URL,원본 URL,클릭 수,메모");
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'url-dashboard.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          });
+      });
+    </script>
+
+    <script>
+      document.getElementById('reset-btn').addEventListener('click', () => {
+        document.getElementById('start-date').value = '';
+        document.getElementById('end-date').value = '';
+        document.getElementById('search-input').value = '';
+        document.getElementById('url-table-body').innerHTML = '';
+        fetchUrls(); // 전체 데이터 다시 로드
+      });
+    </script>
             
 </body>
 </html>
