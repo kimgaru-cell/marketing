@@ -12,11 +12,15 @@
 
     window.onload = () => {
     // 로그인 버튼 이벤트
-    document.getElementById('login-btn').onclick = async () => {
+    document.getElementById('login-form').onsubmit = async () => {
+      e.preventDefault();
+      
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) return alert("로그인 실패: " + error.message);
+      
       alert("로그인 성공! 대시보드로 이동합니다.");
 
       const anonymous_id = localStorage.getItem('anonymous_id');
@@ -41,11 +45,15 @@
 <body class="bg-indigo-50 flex items-center justify-center h-screen">
   <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
     <h2 class="text-3xl font-bold mb-6 text-center text-indigo-700">🔐 로그인</h2>
-    <input id="email" type="email" placeholder="이메일" class="w-full mb-3 px-4 py-2 border rounded" />
-    <input id="password" type="password" placeholder="비밀번호" class="w-full mb-5 px-4 py-2 border rounded" />
-    <button id="login-btn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded mb-4 font-semibold">로그인</button>
+
+    <form id="login-form">
+      <input id="email" type="email" placeholder="이메일" class="w-full mb-3 px-4 py-2 border rounded" />
+      <input id="password" type="password" placeholder="비밀번호" class="w-full mb-5 px-4 py-2 border rounded" />
+      <button type="submit" id="login-btn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded mb-4 font-semibold">로그인</button>
+    </form>
+    
     <p class="text-center text-sm text-gray-600">
-      아직 회원이 아니신가요? 
+      아직 회원이 아니신가요?
       <a href="signup.html" class="text-indigo-600 hover:underline font-medium">회원가입하기</a>
     </p>
   </div>
