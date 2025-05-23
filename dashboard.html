@@ -15,15 +15,15 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'
       );
     
-      async function checkAuth() {
+      async function checkAuthAndRedirect() {
         try {
           const { data: { session }, error } = await supabase.auth.getSession();
           const user = session?.user;
     
-          if (error || !user) {
+          if (sessionError || !user) {
             alert("로그인이 필요합니다.");
             window.location.href = "login.html";
-            return;
+            return false;
           }
 
           // 로그인 된 사용자 이메일 화면에 표시
@@ -36,11 +36,21 @@
               window.location.href = "login.html";
             }
           });
+          return true; // 인증 성공
         } catch (e) {
           console.error("인증 처리 중 예외 발생:", e);
           alert("로그인 상태를 확인할 수 없습니다. 다시 로그인 해주세요.");
           window.location.href = "login.html";
+          return false;
         }
+      }
+        
+      async function initializeDashboard() {
+        const isAuthenticated = await checkAuthAndRedirect();
+        if (isAuthenticated) {
+          fetchUrls(); // 사용자별 URL 목록 가져오기
+          fetchClickStats(); // 전체 클릭 통계 가져오기
+        } else
       }
     
       checkAuth();
@@ -145,44 +155,72 @@
         }
     
       async function fetchUrls() {
-          const { data: { session } } = await supabase.auth.getSession();
+          const { data: { session }, error: sessionError } = await supabase.auth.getSession();
           const user = session?.user;
-          if (!user) return;
-        
-          const res = await fetch('/.netlify/functions/fetch-urls', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ user_id: user.id })  // ✅ 사용자 ID 전달
-          });
-        
-          const data = await res.json();
-          const tbody = document.getElementById('url-table-body');
-        
-          tbody.innerHTML = ''; // 매번 초기화
-        
-          data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.className = "border-t";
-            tr.innerHTML = `
-              <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
-              <td class="px-4 py-2 text-indigo-600">
-                <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
-                <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
-              </td>
-              <td class="px-4 py-2 break-all">${item.original_url}</td>
-              <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
-              <td class="px-4 py-2">${item.memo || ''}</td>
-              <td>
-                <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        }
     
-      fetchUrls();
+          if (sessionError || !user) {
+              console.error("fetchUrls: User session not found or error fetching session.", sessionError);
+              // 필요하다면 사용자에게 알림을 표시하거나 로그인 페이지로 리디렉션
+              document.getElementById('url-table-body').innerHTML = '<tr><td colspan="6" class="text-center py-4">사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.</td></tr>';
+              return;
+          }
+        
+          console.log("fetchUrls: Fetching URLs for user:", user.id); // 디버깅용 로그
+          try {
+              const res = await fetch('/.netlify/functions/fetch-urls', { //
+                method: 'POST', //
+                headers: {
+                  'Content-Type': 'application/json' //
+                },
+                body: JSON.stringify({ user_id: user.id })  // 사용자 ID 전달
+              });
+            
+              if (!res.ok) {
+                const errorData = await res.json().catch(() => ({ message: "서버 응답 처리 실패" }));
+                console.error("fetchUrls: Error response from server:", res.status, errorData);
+                document.getElementById('url-table-body').innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">URL 목록을 불러오는데 실패했습니다: ${errorData.message || errorData.error || res.statusText}</td></tr>`;
+                return;
+              }
+    
+              const data = await res.json(); //
+              console.log("fetchUrls: Received data:", data); // 디버깅용 로그
+    
+              const tbody = document.getElementById('url-table-body'); //
+              tbody.innerHTML = ''; // 매번 초기화
+            
+              if (data && data.length > 0) {
+                data.forEach(item => { //
+                  const tr = document.createElement('tr');
+                  tr.className = "border-t"; //
+                  tr.innerHTML = `
+                    <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
+                    <td class="px-4 py-2 text-indigo-600">
+                      <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
+                      <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
+                    </td>
+                    <td class="px-4 py-2 break-all">${item.original_url}</td>
+                    <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
+                    <td class="px-4 py-2">${item.memo || ''}</td>
+                    <td>
+                      <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
+                    </td>
+                  `; //
+                  tbody.appendChild(tr); //
+                });
+              } else if (data && data.error) {
+                 console.error("fetchUrls: Backend error:", data.error);
+                 tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">URL 목록을 불러오는 중 오류 발생: ${data.error}</td></tr>`;
+              }
+              else {
+                console.log("fetchUrls: No URLs found for this user."); // 디버깅용 로그
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">아직 단축한 URL이 없습니다.</td></tr>';
+              }
+          } catch (error) {
+              console.error("fetchUrls: JavaScript error fetching URLs:", error);
+              document.getElementById('url-table-body').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-500">URL 목록을 불러오는 중 예외가 발생했습니다.</td></tr>';
+          }
+        }
+       
     </script>
     
     <script>
@@ -286,11 +324,34 @@
       const startDate = document.getElementById('start-date').value;
       const endDate = document.getElementById('end-date').value;
       const keyword = document.getElementById('search-input').value.toLowerCase();
+
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      const user = session?.user;
+
+      if (sessionError || !user) {
+          alert("검색을 위해 로그인이 필요합니다. 다시 로그인해주세요.");
+          document.getElementById('url-table-body').innerHTML = '<tr><td colspan="6" class="text-center py-4">로그인이 필요합니다.</td></tr>';
+          return;
+      }
     
       // 기존 fetchUrls()에서 data를 받아와서 필터링
-      fetch('/.netlify/functions/fetch-urls')
-        .then(res => res.json())
+      fetch('/.netlify/functions/fetch-urls', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_id: user.id })
+      })
+        .then(res => {
+          if (!res.ok) { throw new Error(`HTTP error! status: ${res.status}`); }
+          return res.json();
+        })
         .then(data => {
+          if (data.error) {
+            console.error("Search error from backend:", data.error);
+            document.getElementById('url-table-body').innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">검색 중 오류: ${data.error}</td></tr>`;
+            return;
+          }
           const filtered = data.filter(item => {
             // 날짜 필터
             const created = new Date(item.created_at).toISOString().slice(0,10);
@@ -327,23 +388,39 @@
   </script>
 
     <script>
-      document.getElementById('export-btn').addEventListener('click', () => {
+      document.getElementById('export-btn').addEventListener('click', async () => {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        const user = session?.user; // 올바르게 user 가져오기 
+
+        if (sessionError || !user) {
+            alert("엑셀 다운로드를 위해 로그인이 필요합니다. 다시 로그인해주세요.");
+            return;
+        }
+        
         fetch('/.netlify/functions/fetch-urls', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user_id: user.id })
           })
-          .then(res => res.json())
+          .then(res => {
+            if (!res.ok) { throw new Error(`HTTP error! status: ${res.status}`); }
+            return res.json();
+          })
           .then(data => {
+            if (data.error) { // 백엔드에서 보낸 에러 처리
+              console.error("Export error from backend:", data.error);
+              alert(`엑셀 데이터 생성 중 오류: ${data.error}`);
+              return;
+            }
             const csv = data.map(row =>
               [
                 new Date(row.created_at).toLocaleDateString(),
-                `/r/${row.short_code}`,
+                `${window.location.origin}/r/${row.short_code}`,
                 row.original_url,
                 row.clicks || 0,
                 row.memo || ''
-              ].map(v => `"${v}"`).join(',')
-            );
+              ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',') // CSV escaping 개선
+            ); //
             csv.unshift("생성일,단축 URL,원본 URL,클릭 수,메모");
             const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
@@ -353,6 +430,10 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+          })
+          .catch(err => {
+            console.error("Export fetch error:", err);
+            alert("엑셀 다운로드 중 오류가 발생했습니다.");
           });
       });
     </script>
@@ -377,6 +458,21 @@
         document.getElementById('start-date').value = format(start);
         document.getElementById('end-date').value = format(end);
       }
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    
+        const startDateInput = document.getElementById('start-date'); //
+        const endDateInput = document.getElementById('end-date'); //
+        if (startDateInput) startDateInput.value = today; //
+        if (endDateInput) { //
+            endDateInput.value = today; //
+            endDateInput.setAttribute('max', today); //
+        }
+    
+        initializeDashboard();
+      });
     </script>
             
 </body>
