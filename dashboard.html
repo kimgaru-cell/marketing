@@ -156,8 +156,13 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const today = new Date().toISOString().split('T')[0];
+    
+        // 시작일/종료일 기본값 설정
         document.getElementById('start-date').value = today;
         document.getElementById('end-date').value = today;
+    
+        // 종료일은 오늘까지만 선택 가능하도록 제한
+        document.getElementById('end-date').setAttribute('max', today);
       });
     </script>
 
