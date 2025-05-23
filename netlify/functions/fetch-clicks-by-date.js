@@ -1,10 +1,10 @@
 // Supabase와 연결되어 있고, 날짜별 클릭 수를 반환
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
 
 exports.handler = async () => {
   const { data, error } = await supabase
