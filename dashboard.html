@@ -56,6 +56,15 @@
         if (isAuthenticated) {
           if (typeof fetchUrls === 'function') fetchUrls();
           if (typeof fetchClickStats === 'function') fetchClickStats();
+
+          // 세션 체크 타이머 추가
+          setInterval(async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+              alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+              window.location.href = "login.html";
+            }
+          }, 5 * 60 * 1000);
         }
       }
 
