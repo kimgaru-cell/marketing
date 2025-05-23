@@ -329,6 +329,10 @@
     <script>
       document.getElementById('export-btn').addEventListener('click', () => {
         fetch('/.netlify/functions/fetch-urls')
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: user.id })
+          })
           .then(res => res.json())
           .then(data => {
             const csv = data.map(row =>
