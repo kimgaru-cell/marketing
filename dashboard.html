@@ -65,46 +65,44 @@
   </div>
 
    <script>
-  function copyUrl(url) {
-    navigator.clipboard.writeText(url).then(() => {
-      alert('복사되었습니다!');
-    });
-  }
-
-  function deleteUrl(shortCode) {
-    if (confirm('정말 삭제하시겠습니까?')) {
-      alert('삭제 기능은 서버 연동 후 구현하세요.');
-    }
-  }
-
-  async function fetchUrls() {
-    const res = await fetch('/.netlify/functions/fetch-urls');
-    const data = await res.json();
-    const tbody = document.getElementById('url-table-body');
-
-    data.forEach(item => {
-      const tr = document.createElement('tr');
-      tr.className = "border-t";
-      tr.innerHTML = `
-        <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
-        <td class="px-4 py-2 text-indigo-600">
-          <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
-          <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
-        </td>
-        <td class="px-4 py-2 break-all">${item.original_url}</td>
-        <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
-        <td class="px-4 py-2">${item.memo || ''}</td>
-        <td>
-          <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  fetchUrls();
-</script>
-
+      function copyUrl(url) {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('복사되었습니다!');
+        });
+      }
+    
+      function deleteUrl(shortCode) {
+        if (confirm('정말 삭제하시겠습니까?')) {
+          alert('삭제 기능은 서버 연동 후 구현하세요.');
+        }
+      }
+    
+      async function fetchUrls() {
+        const res = await fetch('/.netlify/functions/fetch-urls');
+        const data = await res.json();
+        const tbody = document.getElementById('url-table-body');
+    
+        data.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.className = "border-t";
+          tr.innerHTML = `
+            <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
+            <td class="px-4 py-2 text-indigo-600">
+              <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
+              <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
+            </td>
+            <td class="px-4 py-2 break-all">${item.original_url}</td>
+            <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
+            <td class="px-4 py-2">${item.memo || ''}</td>
+            <td>
+              <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    
+      fetchUrls();
     </script>
     
     <script>
@@ -188,27 +186,6 @@
         urlInput.value = '';
       }
     });
-  </script>
-
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const text = "✨ URL을 짧고 세련되게";
-    const typewriter = document.getElementById("typewriter");
-    const cursor = document.getElementById("cursor");
-    let i = 0;
-  
-    function type() {
-      if (i <= text.length) {
-        typewriter.textContent = text.slice(0, i);
-        i++;
-        setTimeout(type, 90); // 타이핑 속도 (원하면 숫자 조정)
-      } else {
-        cursor.style.display = "inline"; // 커서 계속 깜빡임
-      }
-    }
-  
-    type();
-  });
   </script>
     
   <script>
