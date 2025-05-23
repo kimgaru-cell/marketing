@@ -9,8 +9,8 @@ const supabase = createClient(
 exports.handler = async () => {
   const { data, error } = await supabase
     .from('clicks')
-    .select('created_at')
-    .order('created_at', { ascending: true });
+    .select('timestamp')
+    .order('timestamp', { ascending: true });
 
   if (error) {
     return {
@@ -30,7 +30,7 @@ exports.handler = async () => {
   // 날짜별로 집계
   const counts = {};
   data.forEach(row => {
-    const date = new Date(row.created_at).toISOString().split('T')[0];
+    const date = new Date(row.timestamp).toISOString().split('T')[0];
     counts[date] = (counts[date] || 0) + 1;
   });
 
