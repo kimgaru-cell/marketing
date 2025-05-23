@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://azdnwqrirgpedwcuaqdi.supabase.co',  // ← 본인의 Supabase URL
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'              // ← 본인의 PUBLIC_ANON_KEY
+    );
+
+    window.onload = () => {
+      document.getElementById('signup-btn').onclick = async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) return alert("회원가입 실패: " + error.message);
+        alert("확인 메일이 발송되었습니다. 이메일에서 인증을 완료해주세요.");
+      };
+
+      document.getElementById('login-btn').onclick = async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) return alert("로그인 실패: " + error.message);
+        alert("로그인 성공! 대시보드로 이동합니다.");
+        window.location.href = "dashboard.html"; // 로그인 후 이동할 페이지
+      };
+    };
+  </script>
+</head>
+<body>
+  <h2>🔐 로그인 또는 회원가입</h2>
+  <input id="email" type="email" placeholder="이메일" /><br />
+  <input id="password" type="password" placeholder="비밀번호" /><br /><br />
+  <button id="signup-btn">회원가입</button>
+  <button id="login-btn">로그인</button>
+</body>
+</html>
