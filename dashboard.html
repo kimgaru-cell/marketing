@@ -41,6 +41,10 @@
         <input type="date" id="end-date" class="border rounded px-2 py-1">
         <input type="text" id="search-input" placeholder="메모/URL 검색" class="border rounded px-2 py-1">
         <button id="search-btn" class="bg-indigo-500 text-white px-3 py-1 rounded">검색</button>
+        <button onclick="setDateRange(1)" class="bg-gray-300 px-2 py-1 rounded text-sm">어제</button>
+        <button onclick="setDateRange(7)" class="bg-gray-300 px-2 py-1 rounded text-sm">7일 전</button>
+        <button onclick="setDateRange(30)" class="bg-gray-300 px-2 py-1 rounded text-sm">30일 전</button>
+        <button onclick="setDateRange(90)" class="bg-gray-300 px-2 py-1 rounded text-sm">90일 전</button>
         <button id="export-btn" class="bg-green-600 text-white px-3 py-1 rounded">엑셀 다운로드</button>
         <button id="reset-btn" class="bg-gray-500 text-white px-3 py-1 rounded">전체 보기</button>
       </div>
@@ -148,6 +152,14 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('start-date').value = today;
+        document.getElementById('end-date').value = today;
+      });
+    </script>
 
     <script>
     // --- 활성 메뉴 표시 스크립트 (추가된 부분) ---
@@ -268,6 +280,18 @@
         document.getElementById('url-table-body').innerHTML = '';
         fetchUrls(); // 전체 데이터 다시 로드
       });
+    </script>
+
+    <script>
+      function setDateRange(daysAgo) {
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - daysAgo);
+    
+        const format = (d) => d.toISOString().split('T')[0];
+        document.getElementById('start-date').value = format(start);
+        document.getElementById('end-date').value = format(end);
+      }
     </script>
             
 </body>
