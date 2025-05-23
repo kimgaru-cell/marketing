@@ -11,16 +11,18 @@ exports.handler = async function(event) {
   }
 
   try {
-    const { originalUrl } = JSON.parse(event.body);
+    const { originalUrl, anonymousId } = JSON.parse(event.body);
     if (!originalUrl || !/^https?:\/\//.test(originalUrl)) {
       return { statusCode: 400, body: '올바른 URL을 입력해주세요.' };
     }
 
     const shortcode = Math.random().toString(36).substring(2, 8);
 
-    const { error } = await supabase.from('urls').insert([
-      { shortcode, original_url: originalUrl }
-    ], { returning: 'minimal' });
+    const { error } = await supabase.from('urls').insert([{
+      shortcode, 
+      original_url: originalUrl,
+      anonymous_id: anonymousId
+    }], { returning: 'minimal' });
 
     if (error) {
       return {
