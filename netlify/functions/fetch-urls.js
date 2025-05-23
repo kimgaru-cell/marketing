@@ -7,7 +7,7 @@ const supabase = createClient(
 
 export async function handler() {
   const { data, error } = await supabase
-    .from('urls')
+    .eq('user_id', user.id) // 로그인한 사용자 ID만 조회
     .select('*')
     .order('created_at', { ascending: false })
 
