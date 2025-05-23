@@ -15,6 +15,12 @@
     document.getElementById('signup-btn').onclick = async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
+      const agreed = document.getElementById('privacy-agree').checked;
+      if (!agreed) {
+        alert("회원가입을 위해 개인정보 수집 및 이용에 동의해주세요.");
+        return;
+      }
+      
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) return alert("회원가입 실패: " + error.message);
       alert("가입 완료! 이메일 인증 후 로그인 해주세요.");
