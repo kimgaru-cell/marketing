@@ -32,12 +32,18 @@ exports.handler = async function(event) {
     // 중복 방지용 코드 (선택사항)
     let shortcode;
     let isUnique = false;
+    
     do {
       shortcode = Math.random().toString(36).substring(2, 8);
-      const { data } = await supabase.from('urls').select('id').eq('shortcode', shortcode).single();
+      const { data } = await supabase
+        .from('urls')
+        .select('id')
+        .eq('shortcode', shortcode)
+        .single();
       if (!data) isUnique = true;
     } while (!isUnique);
 
+    // 데이터 삽입
     const { error } = await supabase.from('urls').insert([{
       shortcode,
       original_url: originalUrl,
