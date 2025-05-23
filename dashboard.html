@@ -19,17 +19,27 @@
           const { data: { user }, error } = await supabase.auth.getUser();
     
           if (error) {
-            console.error("인증 정보를 확인하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.", error.message);
+            console.error("세션 조회 중 오류:", error.message);
+            alert("인증 정보를 확인할 수 없습니다.");
+            window.location.href = "login.html";
             return;
           }
-    
-          if (!user) {
+
+          if (!session) {
             alert("로그인이 필요합니다.");
             window.location.href = "login.html";
-          } else {
-            console.log("✅ 로그인된 사용자:", user.email);
-            // 로그인 성공 후 필요한 초기화 작업 수행
+            return;
           }
+
+          console.log("✅ 로그인된 사용자:", session.user.email);
+    
+          supabase.auth.onAuthStateChange((_event, session) => {
+            if (!session) {
+              alert("세션이 만료되어 로그아웃 되었습니다.");
+              window.location.href = "login.html";
+            }
+          });
+            
         } catch (e) {
           console.error("인증 처리 중 예외 발생:", e);
           alert("예기치 않은 오류가 발생했습니다. 로그인 페이지로 이동합니다.");
