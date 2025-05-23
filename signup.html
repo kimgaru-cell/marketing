@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>회원가입</title>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://azdnwqrirgpedwcuaqdi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'
+    );
+
+    window.onload = () => {
+      document.getElementById('signup-btn').onclick = async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        // 개인정보 동의 체크 여부 확인 (있으면)
+        const agree = document.getElementById('agree').checked;
+        if (!agree) {
+          alert('개인정보 처리방침에 동의해주세요.');
+          return;
+        }
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) return alert("회원가입 실패: " + error.message);
+        alert("가입 완료! 이메일 인증 후 로그인 해주세요.");
+        window.location.href = "login.html";
+      };
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-indigo-50 flex items-center justify-center min-h-screen p-6">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+    <h2 class="text-3xl font-bold mb-6 text-center text-indigo-700">📝 회원가입</h2>
+    <input id="email" type="email" placeholder="이메일" class="w-full mb-3 px-4 py-2 border rounded" />
+    <input id="password" type="password" placeholder="비밀번호" class="w-full mb-3 px-4 py-2 border rounded" />
+    
+    <label class="flex items-center mb-5">
+      <input type="checkbox" id="agree" class="mr-2" />
+      <span class="text-gray-700 text-sm">
+        개인정보 처리방침에 동의합니다.
+        <a href="privacy.html" target="_blank" class="text-indigo-600 hover:underline ml-1">(자세히 보기)</a>
+      </span>
+    </label>
+    
+    <button id="signup-btn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded font-semibold mb-4">회원가입</button>
+    
+    <p class="text-center text-sm text-gray-600">
+      이미 회원이신가요? 
+      <a href="login.html" class="text-indigo-600 hover:underline font-medium">로그인하기</a>
+    </p>
+  </div>
+</body>
+</html>
