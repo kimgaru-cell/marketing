@@ -14,27 +14,34 @@
       document.getElementById('signup-btn').onclick = async () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) return alert("회원가입 실패: " + error.message);
-        alert("확인 메일이 발송되었습니다. 이메일에서 인증을 완료해주세요.");
-      };
-
-      document.getElementById('login-btn').onclick = async () => {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) return alert("로그인 실패: " + error.message);
         alert("로그인 성공! 대시보드로 이동합니다.");
-        window.location.href = "dashboard.html"; // 로그인 후 이동할 페이지
+        window.location.href = "dashboard.html";
+      };
+
+      document.getElementById('signup-btn').onclick = async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) return alert("회원가입 실패: " + error.message);
+        alert("가입 완료! 이메일 인증 후 로그인 해주세요.");
       };
     };
   </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
 </head>
-<body>
-  <h2>🔐 로그인 또는 회원가입</h2>
-  <input id="email" type="email" placeholder="이메일" /><br />
-  <input id="password" type="password" placeholder="비밀번호" /><br /><br />
-  <button id="signup-btn">회원가입</button>
-  <button id="login-btn">로그인</button>
+  
+<body class="bg-indigo-50 flex items-center justify-center h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+    <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">🔐 로그인 또는 회원가입</h2>
+    <input id="email" type="email" placeholder="이메일" class="w-full mb-3 px-4 py-2 border rounded" />
+    <input id="password" type="password" placeholder="비밀번호" class="w-full mb-5 px-4 py-2 border rounded" />
+    <div class="flex justify-between space-x-2">
+      <button id="signup-btn" class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">회원가입</button>
+      <button id="login-btn" class="w-1/2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">로그인</button>
+    </div>
+  </div>
 </body>
 </html>
