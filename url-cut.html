@@ -24,6 +24,11 @@
     
   </style>
 
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    window.createClient = createClient; // window에 붙여서 global에서 사용 가능하게
+  </script>
+
 </head>
   
 <body class="bg-gradient-to-br from-indigo-100 via-white to-blue-100 flex flex-col min-h-screen font-sans">
