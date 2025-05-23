@@ -28,7 +28,6 @@
         });
       }
 
-      // 세션 정보를 기다렸다가 이동
       const { data: sessionData } = await supabase.auth.getSession();
       window.location.href = "dashboard.html";
     };
