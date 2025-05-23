@@ -19,11 +19,7 @@ exports.handler = async function(event) {
     const shortcode = Math.random().toString(36).substring(2, 8);
 
     const { error } = await supabase.from('urls').insert([
-      {
-        shortcode,
-        original_url: originalUrl
-        // 로그인하지 않았으므로 user_id는 없이 저장
-      }
+      { shortcode, original_url: originalUrl }
     ], { returning: 'minimal' });
 
     if (error) {
