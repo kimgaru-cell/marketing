@@ -69,15 +69,18 @@
   <header class="p-4 bg-indigo-600 text-white flex justify-between items-center">
     <h1 class="text-3xl font-bold text-indigo-700 mb-6">📊 단축 URL 대시보드</h1>
     <div id="user-info" class="text-sm"></div>
+  </header>
 
-      <!-- 클릭 통계 차트 -->
-    <div class="bg-white rounded shadow p-4 mb-6">
+      
+  <main class="container mx-auto px-4 py-4 flex-grow">
+    <!-- 클릭 통계 차트 -->
+    <section class="bg-white rounded shadow p-4 mb-6">
       <h2 class="text-xl font-semibold mb-4 text-indigo-700">📅 날짜별 클릭 수</h2>
       <canvas id="clickChart" height="100"></canvas>
-    </div>
+    </section>
       
       <!-- [검색/필터/다운로드 UI] -->
-      <div class="flex flex-wrap gap-2 mb-4">
+      <section class="flex flex-wrap gap-2 mb-4">
         <input type="date" id="start-date" class="border rounded px-2 py-1">
         <input type="date" id="end-date" class="border rounded px-2 py-1">
         <input type="text" id="search-input" placeholder="메모/URL 검색" class="border rounded px-2 py-1">
@@ -88,9 +91,9 @@
         <button onclick="setDateRange(90)" class="bg-gray-300 px-2 py-1 rounded text-sm">90일 전</button>
         <button id="export-btn" class="bg-green-600 text-white px-3 py-1 rounded">엑셀 다운로드</button>
         <button id="reset-btn" class="bg-gray-500 text-white px-3 py-1 rounded">전체 보기</button>
-      </div>
+      </section>
 
-    <div class="overflow-x-auto">
+    <section class="overflow-x-auto">
       <table class="min-w-full bg-white rounded shadow">
         <thead>
           <tr class="bg-indigo-100 text-left text-sm font-semibold text-gray-700">
@@ -106,8 +109,10 @@
           <!-- JavaScript로 데이터가 채워질 예정 -->
         </tbody>
       </table>
-    </div>
-  </div>
+    </section>
+  </main>
+    
+</body>
 
    <script>
       function copyUrl(url) {
