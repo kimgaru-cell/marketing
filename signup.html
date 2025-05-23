@@ -17,7 +17,7 @@
         // 개인정보 동의 체크 여부 확인 (있으면)
         const agree = document.getElementById('agree').checked;
         if (!agree) {
-          alert('개인정보 처리방침에 동의해주세요.');
+          alert('회원가입을 위해 개인정보 수집 및 이용에 동의해주세요.');
           return;
         }
         const { error } = await supabase.auth.signUp({ email, password });
