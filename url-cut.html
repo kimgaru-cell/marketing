@@ -29,6 +29,11 @@
     window.createClient = createClient; // window에 붙여서 global에서 사용 가능하게
   </script>
 
+  <script type="module">
+    import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+    window.uuidv4 = uuidv4;
+  </script>
+
 </head>
   
 <body class="bg-gradient-to-br from-indigo-100 via-white to-blue-100 flex flex-col min-h-screen font-sans">
@@ -104,7 +109,7 @@
       // 브라우저에 익명 사용자 ID 저장
       let anonymousId = localStorage.getItem('anonymous_id');
       if (!anonymousId) {
-        anonymousId = crypto.randomUUID(); // 고유 ID 생성
+        anonymousId = window.uuidv4(); // 고유 ID 생성
         localStorage.setItem('anonymous_id', anonymousId);
       }
     
@@ -117,12 +122,17 @@
           return;
         }
 
+         // ✅ 로그인 유저 가져오기
+        const { data: { user } } = await supabase.auth.getUser();
+        const userId = user?.id || null;
+      
         console.log("anonymousId:", anonymousId);
+        console.log("userId:", userId);
 
         const res = await fetch('/.netlify/functions/shorten', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ originalUrl, anonymousId })
+          body: JSON.stringify({ originalUrl, anonymousId, user_id: userId })
         });
     
         if (!res.ok) {
