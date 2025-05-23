@@ -185,7 +185,7 @@
               if (!res.ok) {
                 const errorData = await res.json().catch(() => ({ message: "서버 응답 처리 실패" }));
                 console.error("fetchUrls: Error response from server:", res.status, errorData);
-                document.getElementById('url-table-body').innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">URL 목록을 불러오는데 실패했습니다 ${errorData.message || errorData.error || res.statusText}</td></tr>`;
+                document.getElementById('url-table-body').innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">URL 목록을 불러오는데 실패했습니다: ${errorData.message || errorData.error || res.statusText}</td></tr>`;
                 return;
               }
     
