@@ -77,9 +77,26 @@
     
       function deleteUrl(shortCode) {
         if (confirm('정말 삭제하시겠습니까?')) {
-          alert('삭제 기능은 서버 연동 후 구현하세요.');
+          fetch('/.netlify/functions/delete-url', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ shortCode })
+            })
+              .then(res => res.json())
+              .then(data => {
+                if (data.message === '삭제 완료') {
+                  alert('삭제되었습니다!');
+                  location.reload(); // 또는 fetchUrls(); 로 갱신
+                } else {
+                  alert('삭제 실패: ' + (data.message || '오류'));
+                }
+              })
+              .catch(err => {
+                console.error("삭제 중 오류:", err);
+                alert('삭제 실패: 네트워크 오류');
+              });
+          }
         }
-      }
     
       async function fetchUrls() {
         const res = await fetch('/.netlify/functions/fetch-urls');
