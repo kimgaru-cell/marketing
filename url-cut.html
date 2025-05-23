@@ -93,6 +93,10 @@
     const shortUrlElement = document.getElementById('short-url');
     const copyBtn = document.getElementById('copy-btn');
     const copyFeedback = document.getElementById('copy-feedback');
+    const supabase = createClient(
+      'https://azdnwqrirgpedwcuaqdi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'
+    );
 
     async function shortenUrl() {
       // 1. '단축 완료' 메시지와 버튼을 항상 먼저 숨김
@@ -104,16 +108,22 @@
         return;
       }
 
+      // ✅ 로그인된 사용자의 토큰 가져오기
+      const session = await supabase.auth.getSession();
+      const token = session.data.session?.access_token;
+    
+      // ✅ 토큰 포함해서 서버로 요청
       const res = await fetch('/.netlify/functions/shorten', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // 중요!
         },
         body: JSON.stringify({ originalUrl })
       });
-
+    
       if (!res.ok) {
-        alert("단축에 실패했습니다.");
+        alert("단축에 실패했습니다. 로그인 확인 또는 서버 오류입니다.");
         return;
       }
 
