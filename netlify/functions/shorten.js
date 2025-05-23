@@ -15,7 +15,7 @@ exports.handler = async function(event) {
   }
 
   try {
-    const { originalUrl, anonymousId } = JSON.parse(event.body);
+    const { originalUrl, userId, anonymousId } = JSON.parse(event.body);
     if (!originalUrl || !/^https?:\/\//.test(originalUrl)) {
       return {
         statusCode: 400,
@@ -29,8 +29,9 @@ exports.handler = async function(event) {
     const { error } = await supabase.from('urls').insert([{
       shortcode, 
       original_url: originalUrl,
-      anonymous_id: anonymousId
-    }], { returning: 'minimal' });
+      user_id: userId || null,
+      anonymous_id: !userId ? anonymousId : null
+    }])
 
     if (error) {
       console.error('Supabase 삽입 오류:', error);
