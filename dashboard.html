@@ -14,20 +14,26 @@
         'https://azdnwqrirgpedwcuaqdi.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'
       );
+
+      window.supabase = supabase;
     
       async function checkAuthAndRedirect() {
         try {
           const { data: { session }, error } = await supabase.auth.getSession();
           const user = session?.user;
     
-          if (sessionError || !user) {
+          if (error || !user) {
             alert("로그인이 필요합니다.");
             window.location.href = "login.html";
             return false;
           }
 
-          // 로그인 된 사용자 이메일 화면에 표시
-          document.getElementById('user-info').textContent = `${user.email} 님 환영합니다!`;
+          const userInfoElement = document.getElementById('user-info');
+          if (userInfoElement) {
+              userInfoElement.textContent = `${user.email} 님 환영합니다!`;
+          } else {
+              console.warn("checkAuthAndRedirect: 'user-info' element not found yet.");
+          }
     
           // 세션 만료 시 자동 로그아웃 처리
           supabase.auth.onAuthStateChange((_event, session) => {
@@ -48,12 +54,14 @@
       async function initializeDashboard() {
         const isAuthenticated = await checkAuthAndRedirect();
         if (isAuthenticated) {
-          fetchUrls(); // 사용자별 URL 목록 가져오기
-          fetchClickStats(); // 전체 클릭 통계 가져오기
-        } else
+          if (typeof fetchUrls === 'function') fetchUrls();
+          if (typeof fetchClickStats === 'function') fetchClickStats();
+        }
       }
-    
-      checkAuth();
+
+      window.checkAuthAndRedirect = checkAuthAndRedirect;
+      window.initializeDashboard = initializeDashboard;
+        
     </script>
     
 </head>
@@ -267,65 +275,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const today = new Date().toISOString().split('T')[0];
-    
-        // 시작일/종료일 기본값 설정
-        document.getElementById('start-date').value = today;
-        document.getElementById('end-date').value = today;
-    
-        // 종료일은 오늘까지만 선택 가능하도록 제한
-        document.getElementById('end-date').setAttribute('max', today);
-      });
-    </script>
-
-    <script>
-    // --- 활성 메뉴 표시 스크립트 (추가된 부분) ---
-    document.addEventListener('DOMContentLoaded', function() {
-      // 현재 웹페이지 주소에서 파일 이름 부분만 가져옵니다. (예: "index.html", "notice-tool.html")
-      const currentPath = window.location.pathname.split('/').pop();
-      const menuLinks = document.querySelectorAll('#menu a'); // 메뉴 안의 모든 링크(<a>)를 찾습니다.
-  
-      menuLinks.forEach(link => {
-        // 각 링크가 연결된 주소(href 속성)를 가져옵니다.
-        const linkPath = link.getAttribute('href');
-  
-        // 링크 주소와 현재 페이지 파일 이름이 같으면, 그 링크에 'active-menu' 스타일을 적용합니다.
-        if (linkPath && linkPath === currentPath) {
-          link.classList.add('active-menu');
-        }
-        // 만약 홈페이지(index.html)인데 주소가 그냥 '/' 로 끝나는 경우도 처리
-        else if (currentPath === '' && linkPath === 'index.html') {
-          link.classList.add('active-menu');
-        }
-      });
-  
-      // --- 메뉴 토글 ---
-      const toggleBtn = document.getElementById('menu-toggle');
-      const menu = document.getElementById('menu');
-      if (toggleBtn && menu) {
-        toggleBtn.addEventListener('click', function () {
-          menu.classList.toggle('menu-open');
-        });
-      }
-  
-      // ✨ 입력창 자동 포커스 & 초기화 (존재할 때만 실행)
-      const urlInput = document.getElementById('url-input');
-      if (urlInput) {
-        urlInput.focus();
-        urlInput.value = '';
-      }
-    });
-  </script>
-    
-  <script>
+<script>
   document.getElementById('search-btn').addEventListener('click', function() {
       const startDate = document.getElementById('start-date').value;
       const endDate = document.getElementById('end-date').value;
       const keyword = document.getElementById('search-input').value.toLowerCase();
 
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await window.supabase.auth.getSession();
       const user = session?.user;
 
       if (sessionError || !user) {
@@ -334,7 +290,6 @@
           return;
       }
     
-      // 기존 fetchUrls()에서 data를 받아와서 필터링
       fetch('/.netlify/functions/fetch-urls', {
         method: 'POST',
         headers: {
@@ -365,27 +320,35 @@
           // 테이블 다시 그리기
           const tbody = document.getElementById('url-table-body');
           tbody.innerHTML = '';
-          filtered.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.className = "border-t";
-            tr.innerHTML = `
-              <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
-              <td class="px-4 py-2 text-indigo-600">
-                <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
-                <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
-              </td>
-              <td class="px-4 py-2 break-all">${item.original_url}</td>
-              <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
-              <td class="px-4 py-2">${item.memo || ''}</td>
-              <td>
-                <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
+          if (filtered.length > 0) { 
+            filtered.forEach(item => {
+              const tr = document.createElement('tr');
+              tr.className = "border-t";
+              tr.innerHTML = `
+                <td class="px-4 py-2">${new Date(item.created_at).toLocaleDateString()}</td>
+                <td class="px-4 py-2 text-indigo-600">
+                  <a href="/r/${item.short_code}" target="_blank">/r/${item.short_code}</a>
+                  <button onclick="copyUrl('${window.location.origin}/r/${item.short_code}')" class="ml-2 text-xs bg-gray-200 px-2 rounded">복사</button>
+                </td>
+                <td class="px-4 py-2 break-all">${item.original_url}</td>
+                <td class="px-4 py-2 text-center">${item.clicks || 0}</td>
+                <td class="px-4 py-2">${item.memo || ''}</td>
+                <td>
+                  <button onclick="deleteUrl('${item.short_code}')" class="text-red-500 text-xs">삭제</button>
+                </td>
+              `;
+              tbody.appendChild(tr);
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">검색 결과가 없습니다.</td></tr>';
+          }
+        })
+        .catch(error => { 
+            console.error("Search fetch error:", error);
+            document.getElementById('url-table-body').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-500">검색 중 오류가 발생했습니다.</td></tr>';
         });
     });
-  </script>
+</script>
 
     <script>
       document.getElementById('export-btn').addEventListener('click', async () => {
@@ -462,16 +425,52 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        // --- 날짜 관련 설정 ---
+        const today = new Date().toISOString().split('T')[0];
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
     
-        const startDateInput = document.getElementById('start-date'); //
-        const endDateInput = document.getElementById('end-date'); //
-        if (startDateInput) startDateInput.value = today; //
-        if (endDateInput) { //
-            endDateInput.value = today; //
-            endDateInput.setAttribute('max', today); //
+        if (startDateInput) {
+          startDateInput.value = today;
+        }
+        if (endDateInput) {
+          endDateInput.value = today;
+          endDateInput.setAttribute('max', today);
         }
     
-        initializeDashboard();
+        // --- 활성 메뉴 표시 스크립트 ---
+        const currentPath = window.location.pathname.split('/').pop();
+        const menuLinks = document.querySelectorAll('#menu a');
+        menuLinks.forEach(link => {
+          const linkPath = link.getAttribute('href');
+          if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
+            link.classList.add('active-menu');
+          }
+        });
+    
+        // --- 메뉴 토글 ---
+        const toggleBtn = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        if (toggleBtn && menu) {
+          toggleBtn.addEventListener('click', function () {
+            menu.classList.toggle('menu-open');
+          });
+        }
+    
+        // --- 입력창 자동 포커스 & 초기화 (페이지에 따라 해당 ID가 없을 수 있음) ---
+        const urlInput = document.getElementById('url-input'); // url-cut.html 용도
+        if (urlInput) {
+          urlInput.focus();
+          // urlInput.value = ''; // 필요에 따라 초기화
+        }
+    
+        if (typeof window.initializeDashboard === 'function') {
+          window.initializeDashboard();
+        } else if (typeof initializeDashboard === 'function') {
+          initializeDashboard();
+        } else {
+          console.error("Error: initializeDashboard function is not defined globally or in this scope.");
+        }
       });
     </script>
             
