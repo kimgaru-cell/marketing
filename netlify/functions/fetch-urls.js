@@ -8,17 +8,21 @@ const supabase = createClient(
 export async function handler(event) {
   const { user_id } = JSON.parse(event.body || '{}');
 
-  if (!user_id) {
+  if (!user_id && !anonymous_id) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Missing user_id' }),
+      body: JSON.stringify({ error: 'user_id와 anonymous_id 모두 없습니다.' }),
     };
   }
 
   const { data, error } = await supabase
     .from('urls')
     .select('*') // select 먼저!
-    .eq('user_id', user_id)  // 사용자 ID로 필터링
+    .or(user_id && anonymous_id
+      ? `user_id.eq.${user_id},anonymous_id.eq.${anonymous_id}`
+      : user_id
+        ? `user_id.eq.${user_id}`
+        : `anonymous_id.eq.${anonymous_id}`)
     .order('created_at', { ascending: false });
 
   if (error) {
