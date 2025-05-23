@@ -43,6 +43,17 @@
     <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">🔐 로그인 또는 회원가입</h2>
     <input id="email" type="email" placeholder="이메일" class="w-full mb-3 px-4 py-2 border rounded" />
     <input id="password" type="password" placeholder="비밀번호" class="w-full mb-5 px-4 py-2 border rounded" />
+    
+    <!-- 개인정보 수집 및 이용 동의 -->
+    <div class="mb-4">
+      <label class="inline-flex items-start">
+        <input type="checkbox" id="privacy-agree" class="mt-1 mr-2" />
+        <span class="text-sm text-gray-700">
+          <a href="privacy.html" target="_blank" class="underline text-blue-600">개인정보 수집 및 이용</a>에 동의합니다.
+        </span>
+      </label>
+    </div>
+
     <div class="flex justify-between space-x-2">
       <button id="signup-btn" class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">회원가입</button>
       <button id="login-btn" class="w-1/2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">로그인</button>
