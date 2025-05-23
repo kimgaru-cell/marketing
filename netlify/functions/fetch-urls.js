@@ -7,7 +7,7 @@ const supabase = createClient(
 
 export async function handler() {
   const { data, error } = await supabase
-    .from('short_urls')
+    .from('urls')
     .select('*')
     .order('created_at', { ascending: false })
 
