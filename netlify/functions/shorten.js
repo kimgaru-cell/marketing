@@ -10,6 +10,17 @@ exports.handler = async function(event) {
     return { statusCode: 405, body: 'POST 방식만 허용됩니다.' };
   }
 
+  // 🔐 1. 토큰에서 사용자 인증 정보 추출
+  const token = event.headers.authorization?.replace('Bearer ', '');
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+  if (authError || !user) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ message: '로그인이 필요합니다.' })
+    };
+  }
+
   try {
     const { originalUrl } = JSON.parse(event.body);
     if (!originalUrl || !/^https?:\/\//.test(originalUrl)) {
@@ -18,14 +29,14 @@ exports.handler = async function(event) {
 
     const shortcode = Math.random().toString(36).substring(2, 8);
 
+    // ✅ 2. 사용자 ID를 포함해서 삽입
     const { error } = await supabase.from('urls').insert([
       {
         shortcode,
-        original_url: originalUrl
+        original_url: originalUrl,
+        user_id: user.id
       }
-    ],
-    { returning: 'minimal' } // ✅ 핵심 수정
-  );
+    ], { returning: 'minimal' });
 
     if (error) {
       console.error('Supabase 오류:', error);
@@ -47,3 +58,4 @@ exports.handler = async function(event) {
     };
   }
 };
+
