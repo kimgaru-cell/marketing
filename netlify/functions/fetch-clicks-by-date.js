@@ -12,7 +12,20 @@ exports.handler = async () => {
     .select('created_at')
     .order('created_at', { ascending: true });
 
-  if (error) return { statusCode: 500, body: JSON.stringify(error) };
+  if (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message })  // 에러 메시지 명확히 전달
+    };
+  }
+
+  // 데이터가 없으면 빈 배열 반환
+  if (!data) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify([])
+    };
+  }
 
   // 날짜별로 집계
   const counts = {};
