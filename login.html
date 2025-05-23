@@ -11,21 +11,6 @@
     );
 
     window.onload = () => {
-    // 회원가입 버튼 이벤트
-    document.getElementById('signup-btn').onclick = async () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const agreed = document.getElementById('privacy-agree').checked;
-      if (!agreed) {
-        alert("회원가입을 위해 개인정보 수집 및 이용에 동의해주세요.");
-        return;
-      }
-      
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) return alert("회원가입 실패: " + error.message);
-      alert("가입 완료! 이메일 인증 후 로그인 해주세요.");
-    };
-  
     // 로그인 버튼 이벤트
     document.getElementById('login-btn').onclick = async () => {
       const email = document.getElementById('email').value;
@@ -44,26 +29,17 @@
   
 </head>
   
+</head>
 <body class="bg-indigo-50 flex items-center justify-center h-screen">
   <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-    <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">🔐 로그인 또는 회원가입</h2>
+    <h2 class="text-3xl font-bold mb-6 text-center text-indigo-700">🔐 로그인</h2>
     <input id="email" type="email" placeholder="이메일" class="w-full mb-3 px-4 py-2 border rounded" />
     <input id="password" type="password" placeholder="비밀번호" class="w-full mb-5 px-4 py-2 border rounded" />
-    
-    <!-- 개인정보 수집 및 이용 동의 -->
-    <div class="mb-4">
-      <label class="inline-flex items-start">
-        <input type="checkbox" id="privacy-agree" class="mt-1 mr-2" />
-        <span class="text-sm text-gray-700">
-          <a href="privacy.html" target="_blank" class="underline text-blue-600">개인정보 수집 및 이용</a>에 동의합니다.
-        </span>
-      </label>
-    </div>
-
-    <div class="flex justify-between space-x-2">
-      <button id="signup-btn" class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">회원가입</button>
-      <button id="login-btn" class="w-1/2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">로그인</button>
-    </div>
+    <button id="login-btn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded mb-4 font-semibold">로그인</button>
+    <p class="text-center text-sm text-gray-600">
+      아직 회원이 아니신가요? 
+      <a href="signup.html" class="text-indigo-600 hover:underline font-medium">회원가입하기</a>
+    </p>
   </div>
 </body>
 </html>
