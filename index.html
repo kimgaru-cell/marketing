@@ -31,26 +31,38 @@
   </nav>
     
     <div class="container">
-        <section class="intro">
-            <h2>Marketing-tool 페이지에 오신 걸 환영합니다!</h2>
-            <p>이곳은 마케터의 손끝에서 시작된, 마케터를 위한 공간입니다.<br>
-            온라인 마케팅을 더욱 쉽고, 똑똑하게.<br>
-            AI의 힘을 빌려, 실용적인 마케팅 툴들을 직접 제작하고 여러분께 제공합니다.<br><br>
-            아직은 다듬어가는 여정 위에 있습니다.<br>
-            부족한 부분이나 오류가 있다면, 아래 "문의하기"를 통해 따뜻한 피드백 부탁드립니다.<br>
-            당신의 의견이 이 도구들을 더 나은 길로 이끌어줄 거예요.</p>
-            <a href="mailto:wogh1104@kakao.com" class="cta-button">문의하기</a>
+        <section class="text-center py-16 bg-white bg-opacity-80 rounded-lg shadow-md my-10 mx-4">
+          <h1 class="text-4xl font-bold text-indigo-800 mb-4">마케터의 성과를 높이는 툴박스</h1>
+          <p class="text-gray-700 text-lg mb-6">트렌드, 분석, 자동화까지 한 번에. 실무 마케터를 위한 도구들이 여기에 있습니다.</p>
+          <div class="flex justify-center gap-4">
+            <a href="url-cut.html" class="px-6 py-2 bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700">URL 단축기</a>
+            <a href="dashboard.html" class="px-6 py-2 bg-gray-100 text-indigo-600 border border-indigo-600 rounded-full shadow hover:bg-indigo-100">대시보드</a>
+            <a href="#" class="px-6 py-2 bg-pink-600 text-white rounded-full shadow hover:bg-pink-700">📊 UTM 생성기 (준비 중)</a>
+          </div>
         </section>
-        
-        <div class="news-section">
-            <div class="clearfix">
-                <h2>물류 관련 최신 소식</h2>
-                <button id="refreshLogisticsNews" class="refresh-button">새로고침</button>
+
+        <!-- 마케팅 트렌드 뉴스 -->
+        <section class="news-section my-10 px-4">
+          <div class="clearfix mb-4">
+            <h2 class="text-2xl font-semibold text-gray-800">마케팅 트렌드 뉴스</h2>
+            <button id="refreshMarketingNews" class="text-sm px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">새로고침</button>
+          </div>
+          <div id="marketingNews">
+            <div class="loading">마케팅 관련 뉴스를 불러오는 중...</div>
+          </div>
+        </section>
+
+        <section class="news-section my-10 px-4">
+            <div class="news-section">
+                <div class="clearfix">
+                    <h2>물류 관련 최신 소식</h2>
+                    <button id="refreshLogisticsNews" class="refresh-button">새로고침</button>
+                </div>
+                <div id="logisticsNews">
+                    <div class="loading">물류 관련 뉴스를 불러오는 중...</div>
+                </div>
             </div>
-            <div id="logisticsNews">
-                <div class="loading">물류 관련 뉴스를 불러오는 중...</div>
-            </div>
-        </div>
+        </section>
         
         <div class="news-section">
             <div class="clearfix">
@@ -77,7 +89,71 @@
     <script>
         // 네이버 뉴스 API를 사용하는 대신 CORS 우회를 위한 프록시 서버 사용
         const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+
+        // 마케팅 관련 뉴스 불러오기 (네이버 뉴스 검색 RSS)
+        function fetchLogisticsNews() {
+          const MarketingNewsContainer = document.getElementById('MarketingNews');
+          MarketingNewsContainer.innerHTML = '<div class="loading">마케팅 관련 뉴스를 불러오는 중...</div>';
         
+          fetch('/.netlify/functions/getNaverNews?query=마케팅')  // ✅ 여기서 '마케팅' 검색어 사용
+            .then(response => response.json())
+            .then(data => {
+              let html = '';
+              const fetchPromises = []; // 추가: 언론사 정보 가져오기 위한 프로미스 배열
+        
+              if (data.items && data.items.length > 0) {
+                data.items.forEach(item => {
+                  const title = item.title.replace(/<[^>]+>/g, '');
+                  const link = item.link;
+                  const date = new Date(item.pubDate).toLocaleDateString();
+                  const originallink = item.originallink || item.link; // 추가: 원본 링크 가져오기
+                  const domain = new URL(item.originallink || item.link).hostname;
+        
+                  const publisherPromise = fetch('/.netlify/functions/getPublisher?url=' + encodeURIComponent(originallink))
+                    .then(res => res.json())
+                    .then(publisherData => {
+                      const publisher = publisherData.publisher || ''; // publisher가 undefined인 경우 빈 문자열로 설정
+                      
+                      // 수정된 HTML 템플릿
+                      return `
+                        <div class="news-item">
+                          <span class="news-source">${publisher}</span>
+                          <span class="news-date">${date}</span>
+                          <h3 class="news-title"><a href="${link}" target="_blank">${title}</a></h3>
+                        </div>
+                      `;
+                    })
+                    .catch(error => {
+                      console.error('언론사 정보 로딩 실패:', error);
+                      return `
+                        <div class="news-item">
+                          <span class="news-source">${domain}</span>
+                          <span class="news-date">${date}</span>
+                          <h3 class="news-title"><a href="${link}" target="_blank">${title}</a></h3>
+                        </div>
+                      `;
+                    });
+        
+                  fetchPromises.push(publisherPromise);
+                });
+        
+                Promise.all(fetchPromises)
+                  .then(newsItemsHTML => {
+                    html = newsItemsHTML.join(''); // Combine all HTML snippets into one string
+                    logisticsNewsContainer.innerHTML = html; // Update the container once
+                  });
+                  
+              } else {
+                html = '<p>관련 뉴스를 찾을 수 없습니다.</p>';
+                logisticsNewsContainer.innerHTML = html;
+              }
+            })
+            .catch(error => {
+              console.error('마케팅 뉴스 로딩 실패:', error);
+              logisticsNewsContainer.innerHTML = '<p>뉴스를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</p>';
+            });
+        }
+     
         // 물류 관련 뉴스 불러오기 (네이버 뉴스 검색 RSS)
         function fetchLogisticsNews() {
           const logisticsNewsContainer = document.getElementById('logisticsNews');
