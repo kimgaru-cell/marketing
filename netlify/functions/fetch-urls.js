@@ -6,7 +6,18 @@ const supabase = createClient(
 )
 
 export async function handler(event) {
-  const { user_id } = JSON.parse(event.body || '{}');
+  let body;
+
+  try {
+    body = JSON.parse(event.body || '{}');
+  } catch (e) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: '잘못된 JSON입니다.' }),
+    };
+  }
+
+  const { user_id, anonymous_id } = body;
 
   if (!user_id && !anonymous_id) {
     return {
@@ -15,14 +26,19 @@ export async function handler(event) {
     };
   }
 
+  let filter = '';
+  if (user_id && anonymous_id) {
+    filter = `user_id.eq.${user_id},anonymous_id.eq.${anonymous_id}`;
+  } else if (user_id) {
+    filter = `user_id.eq.${user_id}`;
+  } else {
+    filter = `anonymous_id.eq.${anonymous_id}`;
+  }
+
   const { data, error } = await supabase
     .from('urls')
-    .select('*') // select 먼저!
-    .or(user_id && anonymous_id
-      ? `user_id.eq.${user_id},anonymous_id.eq.${anonymous_id}`
-      : user_id
-        ? `user_id.eq.${user_id}`
-        : `anonymous_id.eq.${anonymous_id}`)
+    .select('*')
+    .or(filter)
     .order('created_at', { ascending: false });
 
   if (error) {
