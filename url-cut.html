@@ -123,11 +123,8 @@
         }
 
          // ✅ 로그인 유저 가져오기
-        const { data: { user } } = await supabase.auth.getUser();
-        const userId = user?.id || null;
-      
-        console.log("anonymousId:", anonymousId);
-        console.log("userId:", userId);
+        const { data: { session }, error } = await supabase.auth.getSession();
+        const userId = session?.user?.id || null;
 
         const res = await fetch('/.netlify/functions/shorten', {
           method: 'POST',
