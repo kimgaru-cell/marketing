@@ -56,7 +56,7 @@
         </h2>
         <button id="refreshMarketingNews" class="text-sm px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition">🔄 새로고침</button>
       </div>
-      <div id="marketingNews" class="grid gap-4">
+      <div id="marketingNews" class="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
         <div class="loading text-gray-500 text-center">마케팅 관련 뉴스를 불러오는 중...</div>
       </div>
     </section>
@@ -127,33 +127,33 @@
                       
                       // 뉴스 HTML 템플릿
                       return `
-                        <div class="p-4 bg-white rounded-lg shadow hover:shadow-md transition">
-                            <div class="flex justify-between text-sm text-gray-500 mb-1">
-                              <span class="news-source">${publisher}</span>
-                              <span class="news-date">${date}</span>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-800 leading-snug">
-                              <a href="${link}" target="_blank" class="hover:underline">
-                                ${title}
-                              </a>
-                            </h3>
+                        <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-1 duration-200">
+                          <div class="flex justify-between text-sm text-gray-500 mb-1">
+                            <span class="news-source font-medium text-indigo-600">${publisher}</span>
+                            <span class="news-date">${date}</span>
                           </div>
+                          <h3 class="text-lg font-semibold text-gray-800 leading-snug">
+                            <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
+                              ${title}
+                            </a>
+                          </h3>
+                        </div>
                         `;
                       })
                       .catch(error => {
                         console.error('언론사 정보 로딩 실패:', error);
                         return `
-                          <div class="p-4 bg-white rounded-lg shadow hover:shadow-md transition">
-                              <div class="flex justify-between text-sm text-gray-500 mb-1">
-                                <span class="news-source">${domain}</span>
-                                <span class="news-date">${date}</span>
-                              </div>
-                              <h3 class="text-lg font-semibold text-gray-800 leading-snug">
-                                <a href="${link}" target="_blank" class="hover:underline">
-                                  ${title}
-                                </a>
-                              </h3>
-                            </div>
+                          <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-1 duration-200">
+                          <div class="flex justify-between text-sm text-gray-500 mb-1">
+                            <span class="news-source font-medium text-indigo-600">${domain}</span>
+                            <span class="news-date">${date}</span>
+                          </div>
+                          <h3 class="text-lg font-semibold text-gray-800 leading-snug">
+                            <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
+                              ${title}
+                            </a>
+                          </h3>
+                        </div>
                           `;
                         });
         
