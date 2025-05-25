@@ -44,7 +44,7 @@
         <!-- 마케팅 트렌드 뉴스 -->
         <section class="news-section my-10 px-4">
           <div class="clearfix mb-4">
-            <h2 class="text-2xl font-semibold text-gray-800">마케팅 트렌드 뉴스</h2>
+            <h2 class="text-2xl font-semibold text-gray-800">📈 마케팅 트렌드 뉴스</h2>
             <button id="refreshMarketingNews" class="text-sm px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">새로고침</button>
           </div>
           <div id="marketingNews">
@@ -91,9 +91,9 @@
         const PROXY_URL = 'https://api.allorigins.win/raw?url=';
 
         // 마케팅 관련 뉴스 불러오기 (네이버 뉴스 검색 RSS)
-        function fetchLogisticsNews() {
-          const MarketingNewsContainer = document.getElementById('MarketingNews');
-          MarketingNewsContainer.innerHTML = '<div class="loading">마케팅 관련 뉴스를 불러오는 중...</div>';
+        function fetchMarketingNews() {
+          const marketingNewsContainer = document.getElementById('marketingNews');
+          marketingNewsContainer.innerHTML = '<div class="loading">마케팅 관련 뉴스를 불러오는 중...</div>';
         
           fetch('/.netlify/functions/getNaverNews?query=마케팅')  // ✅ 여기서 '마케팅' 검색어 사용
             .then(response => response.json())
@@ -355,6 +355,7 @@
             try {
                 fetchLogisticsNews();
                 fetchFasstoNews();
+                fetchMarketingNews();
             } catch (error) {
                 console.error('Error loading news:', error);
                 loadSampleNews();
@@ -363,6 +364,7 @@
             // 새로고침 버튼에 이벤트 리스너 추가
             document.getElementById('refreshLogisticsNews').addEventListener('click', fetchLogisticsNews);
             document.getElementById('refreshFasstoNews').addEventListener('click', fetchFasstoNews);
+            document.getElementById('refreshFasstoNews').addEventListener('click', fetchMarketingNews);
         });
     </script>
 
