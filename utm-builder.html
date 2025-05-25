@@ -42,3 +42,17 @@
       <button class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">UTM 링크 생성</button>
     </div>
   </main>
+
+<!-- main page -->
+    <div id="footer-placeholder"></div>
+    
+    <script>
+      fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-placeholder').innerHTML = data;
+        });
+    </script>
+
+</body>
+</html>
