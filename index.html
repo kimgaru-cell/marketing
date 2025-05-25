@@ -140,17 +140,17 @@
                 Promise.all(fetchPromises)
                   .then(newsItemsHTML => {
                     html = newsItemsHTML.join(''); // Combine all HTML snippets into one string
-                    logisticsNewsContainer.innerHTML = html; // Update the container once
+                    marketingNewsContainer.innerHTML = html; // Update the container once
                   });
                   
               } else {
                 html = '<p>관련 뉴스를 찾을 수 없습니다.</p>';
-                logisticsNewsContainer.innerHTML = html;
+                marketingNewsContainer.innerHTML = html;
               }
             })
             .catch(error => {
               console.error('마케팅 뉴스 로딩 실패:', error);
-              logisticsNewsContainer.innerHTML = '<p>뉴스를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</p>';
+              marketingNewsContainer.innerHTML = '<p>뉴스를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</p>';
             });
         }
      
