@@ -125,25 +125,35 @@
                     .then(publisherData => {
                       const publisher = publisherData.publisher || ''; // publisher가 undefined인 경우 빈 문자열로 설정
                       
-                      // 수정된 HTML 템플릿
+                      // 뉴스 HTML 템플릿
                       return `
-                        <div class="news-item">
-                          <span class="news-source">${publisher}</span>
-                          <span class="news-date">${date}</span>
-                          <h3 class="news-title"><a href="${link}" target="_blank">${title}</a></h3>
-                        </div>
-                      `;
-                    })
+                        <div class="p-4 bg-white rounded-lg shadow hover:shadow-md transition">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                              <span class="news-source">${publisher}</span>
+                              <span class="news-date">${date}</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 leading-snug">
+                              <a href="${link}" target="_blank" class="hover:underline">
+                                ${title}
+                              </a>
+                            </h3>
+                          </div>
+                        `;
                     .catch(error => {
                       console.error('언론사 정보 로딩 실패:', error);
                       return `
-                        <div class="news-item">
-                          <span class="news-source">${domain}</span>
-                          <span class="news-date">${date}</span>
-                          <h3 class="news-title"><a href="${link}" target="_blank">${title}</a></h3>
-                        </div>
-                      `;
-                    });
+                        <div class="p-4 bg-white rounded-lg shadow hover:shadow-md transition">
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                              <span class="news-source">${domain}</span>
+                              <span class="news-date">${date}</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 leading-snug">
+                              <a href="${link}" target="_blank" class="hover:underline">
+                                ${title}
+                              </a>
+                            </h3>
+                          </div>
+                        `;
         
                   fetchPromises.push(publisherPromise);
                 });
