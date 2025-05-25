@@ -12,3 +12,15 @@ const { data, error } = await supabase
   .select('*')
   .eq('user_id', user_id)
   .order('created_at', { ascending: false });
+
+if (error) {
+  return {
+    statusCode: 500,
+    body: JSON.stringify({ error: error.message }),
+  };
+}
+
+return {
+  statusCode: 200,
+  body: JSON.stringify(data),
+};
