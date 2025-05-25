@@ -19,6 +19,7 @@ export async function handler(event) {
     .from('urls')
     .update({ user_id })
     .eq('anonymous_id', anonymous_id);
+    .is('user_id', null);
 
   if (error) {
     return {
