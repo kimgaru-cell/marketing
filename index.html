@@ -155,9 +155,9 @@
                               </h3>
                             </div>
                           `;
+                        });
         
                   fetchPromises.push(publisherPromise);
-                });
         
                 Promise.all(fetchPromises)
                   .then(newsItemsHTML => {
