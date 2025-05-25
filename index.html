@@ -158,6 +158,7 @@
                         });
         
                   fetchPromises.push(publisherPromise);
+                });
         
                 Promise.all(fetchPromises)
                   .then(newsItemsHTML => {
