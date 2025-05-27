@@ -177,3 +177,22 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.3) transparent;
 }
+.snap-wrapper {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap-item {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 2rem;
+  background: linear-gradient(147deg, #2e3a59 0%, #1a2b46 74%);
+  color: white;
+}
