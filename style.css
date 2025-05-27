@@ -212,8 +212,8 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
 }
 
 .news-card:not(.active) {
-  background-color: rgba(255, 255, 255, 0.08); /* 배경은 연하게 */
-  color: rgba(255, 255, 255, 0.6); /* 텍스트 색상 흐리게 */
+  background-color: rgba(46, 58, 89, 0.7); /* 중앙 카드보다 약간 연하게 */
+  color: rgba(255, 255, 255, 0.9); /* 거의 흰색처럼 선명하게 */
   transform: scale(0.97);
   transition: all 0.3s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -223,6 +223,6 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
 .news-card:not(.active) .news-source,
 .news-card:not(.active) .news-date,
 .news-card:not(.active) a {
-  color: rgba(255, 255, 255, 0.6) !important;
-  text-shadow: none;
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 }
