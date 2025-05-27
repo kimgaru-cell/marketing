@@ -281,6 +281,44 @@
         }
       });
     </script>
+
+    <script>
+      const container = document.getElementById("marketingNews");
+    
+      function highlightNearestCard() {
+        const cards = container.querySelectorAll(".news-card");
+        const containerRect = container.getBoundingClientRect();
+        const centerY = containerRect.top + containerRect.height / 2;
+    
+        let closestCard = null;
+        let closestDistance = Infinity;
+    
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const cardCenter = rect.top + rect.height / 2;
+          const distance = Math.abs(centerY - cardCenter);
+    
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestCard = card;
+          }
+        });
+    
+        // 스타일 초기화 및 강조 적용
+        cards.forEach((card) => card.classList.remove("active"));
+        if (closestCard) closestCard.classList.add("active");
+      }
+    
+      // 스크롤 시마다 실행
+      container.addEventListener("scroll", () => {
+        window.requestAnimationFrame(highlightNearestCard);
+      });
+    
+      // 초기 실행
+      window.addEventListener("load", () => {
+        highlightNearestCard();
+      });
+    </script>
     
 </body>
 </html>
