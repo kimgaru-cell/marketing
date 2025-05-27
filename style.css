@@ -131,7 +131,7 @@ header { text-align: center; padding: 40px 0; background-color: #02855B; color: 
 h1 { font-size: 2.5rem; margin-bottom: 15px; }
 h2 { font-size: 1.8rem; color: #02855B; margin-top: 30px; }
 .intro { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-.news-section { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
+.news-section { background-color: transparent; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
 body { font-family: 'Pretendard', sans-serif; line-height: 1.6; margin: 0; padding: 0; color: #333; background-color: #f8f9fa; }
 .news-item { border-bottom: 1px solid #eee; padding: 15px 0; }
 .news-item:last-child { border-bottom: none; }
