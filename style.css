@@ -148,18 +148,6 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
 .refresh-button:hover { background-color: #e1e1e1; }
 .clearfix::after { content: ""; clear: both; display: table; }
 .news-publisher { font-size: 0.8em; color: #777; }
-.scroll-list-wrp .news-card {
-  background: rgba(255, 255, 255, 0.05); /* 약간 어두운 투명 배경 */
-  border-radius: 0.5rem;
-  padding: 1.25rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.scroll-list-wrp .news-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
 
 /* hover 시 제목 색상 */
 .scroll-list-wrp a:hover {
@@ -206,6 +194,11 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
 
 .news-card a:hover {
   color: #051f98;
+}
+
+.news-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .news-card.active {
