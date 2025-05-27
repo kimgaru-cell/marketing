@@ -164,13 +164,15 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
   border-radius: 10px;
 }
 .scroll-list-wrp {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(6px);
   max-height: 400px;
   overflow-y: auto;
   scroll-behavior: smooth;
   padding: 2rem;
   background: transparent;
-  border-radius: 0.5rem;
-  box-shadow: 0px 7px 46px rgba(0, 0, 0, 0.3);
+  border-radius: 0.75rem;
+  box-shadow: 0px 7px 46px rgba(0, 0, 0, 0.4);
 }
 .news-card {
   opacity: 1;
@@ -178,7 +180,7 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   margin-bottom: 1.5rem;
   padding: 1.5rem;
-  background: rgba(143, 158, 197, 0.8); /*카드 배경 색상*/
+  background: rgba(225, 225, 225, 0.05); /*카드 배경 색상*/
   border-radius: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   color: white;
