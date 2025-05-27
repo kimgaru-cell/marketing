@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
 
 exports.handler = async function(event) {
-  const query = event.queryStringParameters.query || '파스토';
-  const url = `https://openapi.naver.com/v1/search/news.json?query=${encodeURIComponent(query)}&display=5&sort=date`;
+  const query = event.queryStringParameters.query || '마케팅';
+  const displayCount = 20;
+  const url = `https://openapi.naver.com/v1/search/news.json?query=${encodeURIComponent(query)}&display=${displayCount}&sort=date`;
 
   try {
     const res = await fetch(url, {
