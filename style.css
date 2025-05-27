@@ -66,6 +66,18 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .news-card {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .scroll-list-wrp {
+    padding: 1rem;
+    max-height: 80vh;
+  }
+}
+
 /* --- 활성 메뉴 스타일 --- */
 /* 현재 보고 있는 페이지 메뉴에 적용될 스타일 */
 #menu a.active-menu {
@@ -172,38 +184,32 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
   border-radius: 0.5rem;
   box-shadow: 0px 7px 46px rgba(0, 0, 0, 0.3);
 }
-
 .news-card {
   opacity: 0.4;
-  transition: all 0.3s ease;
+  transform: scale(0.98);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   margin-bottom: 1.5rem;
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+.news-card h3,
+.news-card .news-source,
+.news-card .news-date,
+.news-card a {
+  color: white;
+}
+
+.news-card a:hover {
+  color: #a5b4fc;
 }
 
 .news-card.active {
   opacity: 1;
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-}
-.snap-wrapper {
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-.snap-item {
-  height: 100vh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  padding: 2rem;
-  background: linear-gradient(147deg, #2e3a59 0%, #1a2b46 74%);
-  color: white;
+  transform: scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  z-index: 10;
 }
