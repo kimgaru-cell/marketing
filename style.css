@@ -212,8 +212,9 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
 }
 
 .news-card:not(.active) {
-  opacity: 0.4;
-  filter: blur(0.5px);
-  transform: scale(0.98);
-  transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+  background-color: rgba(255, 255, 255, 0.08);  /* 배경만 약간 밝게 */
+  opacity: 1; /* 텍스트는 선명하게 보이도록 유지 */
+  filter: none; /* 흐릿한 효과 제거 */
+  transform: scale(0.98); /* 살짝 축소 */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
