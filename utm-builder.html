@@ -229,9 +229,7 @@
 
         copyBtn.addEventListener('click', () => {
             generatedUrlTextarea.select();
-            document.execCommand('copy'); // Deprecated지만, 클립보드 API는 https 또는 localhost 에서만 주로 동작
-            // navigator.clipboard.writeText(generatedUrlTextarea.value) 보다 구형 브라우저 호환성이 좋음
-            // 최신 방식: navigator.clipboard.writeText(generatedUrlTextarea.value).then(...)
+            document.execCommand('copy');
             copyFeedback.textContent = '✅ 복사되었습니다!';
             copyFeedback.style.display = 'block';
             setTimeout(() => {
@@ -265,7 +263,6 @@
             })
             .catch(error => {
                 console.warn('Footer loading failed:', error);
-                // document.getElementById('footer-placeholder').innerHTML = '<p class="text-center text-gray-500 py-4">Footer could not be loaded.</p>';
             });
     </script>
 </body>
