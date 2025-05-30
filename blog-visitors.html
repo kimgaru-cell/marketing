@@ -44,19 +44,39 @@
 
   <script>
       async function getVisitors() {
-        const blogId = document.getElementById('blogIdInput').value;
-        const result = await fetch(`/.netlify/functions/getBlogVisitors?blogId=${blogId}`);
-        const data = await result.json();
-  
-        const list = document.getElementById('visitorList');
-        list.innerHTML = '';
-  
-        data.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = `${item.date}: ${item.count.toLocaleString()}명`;
-          list.appendChild(li);
-        });
-      }
+          const blogId = document.getElementById('blogIdInput').value.trim();
+          const errorDiv = document.getElementById('error');
+          const list = document.getElementById('visitorList');
+          errorDiv.textContent = '';
+          list.innerHTML = '';
+        
+          if (!blogId) {
+            errorDiv.textContent = '블로그 ID를 입력해주세요.';
+            return;
+          }
+        
+          try {
+            const result = await fetch(`/.netlify/functions/getBlogVisitors?blogId=${blogId}`);
+            if (!result.ok) {
+              throw new Error('서버 응답 실패');
+            }
+        
+            const data = await result.json();
+        
+            if (!Array.isArray(data)) {
+              throw new Error('데이터 형식 오류');
+            }
+        
+            data.forEach(item => {
+              const li = document.createElement('li');
+              li.textContent = `${item.date}: ${item.count.toLocaleString()}명`;
+              list.appendChild(li);
+            });
+          } catch (error) {
+            console.error(error);
+            errorDiv.textContent = '조회 중 오류가 발생했어요. 다시 시도해주세요.';
+          }
+        }
     </script>
 
     <div id="footer-placeholder" class="mt-auto"></div>
