@@ -2,15 +2,21 @@ const fetch = require('node-fetch');
 
 exports.handler = async function(event, context) {
   const username = event.queryStringParameters.username;
+  const rapidApiKey = process.env.RAPIDAPI_KEY; // 환경변수에서 불러옴
+
   if (!username) {
     return { statusCode: 400, body: JSON.stringify({ error: 'username required' }) };
+  }
+
+  if (!rapidApiKey) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'RAPIDAPI_KEY is missing in environment variables' }) };
   }
 
   try {
     const response = await fetch(`https://instagram-public-bulk-scraper.p.rapidapi.com/ig/user_followers/?username=${username}`, {
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': '45b31f709dmshb13fc5dd2b49e08p1a16dcjsne8c1be7b6770',
+        'X-RapidAPI-Key': rapidApiKey,
         'X-RapidAPI-Host': 'instagram-public-bulk-scraper.p.rapidapi.com'
       }
     });
@@ -23,7 +29,6 @@ exports.handler = async function(event, context) {
         followers: data.followers,
         posts: data.posts,
         avgLikes: data.avgLikes,
-        // 필요 데이터만 골라서
       }),
     };
   } catch (err) {
