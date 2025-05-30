@@ -22,6 +22,7 @@ exports.handler = async function(event, context) {
     });
 
     const data = await response.json();
+    console.log("📦 받은 데이터:", data);
 
     return {
       statusCode: 200,
