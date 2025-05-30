@@ -40,9 +40,7 @@
 
   </main>
 
-    <div id="footer-placeholder" class="mt-auto"></div>
-
-    <script>
+  <script>
       async function getVisitors() {
         const blogId = document.getElementById('blogIdInput').value;
         const result = await fetch(`/.netlify/functions/getBlogVisitors?blogId=${blogId}`);
@@ -58,7 +56,9 @@
         });
       }
     </script>
-  
+
+    <div id="footer-placeholder" class="mt-auto"></div>
+
     <script>
         // Footer 로드
         fetch('footer.html')
