@@ -33,10 +33,12 @@
             <div class="text-center md:text-left">
                 <h1 class="text-3xl font-bold text-gray-800">네이버 블로그 최근 방문자 수</h1>
             </div>
-          <input id="blogIdInput" placeholder="블로그 ID를 입력하세요 (예: naver_diary)">
-          <button onclick="getVisitors()">조회하기</button>
-          
-          <ul id="visitorList"></ul>
+            
+          <input id="blogIdInput" placeholder="블로그 ID를 입력하세요 (예: naver_diary)" class="w-full border border-gray-300 rounded px-3 py-2">
+          <button onclick="getVisitors()" class="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">조회하기</button>
+        
+          <div id="error" class="text-red-500 mt-2"></div>
+          <ul id="visitorList" class="mt-4 space-y-1 text-gray-800 font-medium"></ul>
 
   </main>
 
