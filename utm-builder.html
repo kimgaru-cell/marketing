@@ -30,28 +30,243 @@
         </div>
     </nav>
 
-  <main class="flex-grow container mx-auto px-4 py-10 max-w-xl">
-    <div class="bg-white rounded-lg shadow-md p-6 space-y-4 max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold text-gray-800">🎯 UTM 코드 생성기</h2>
-      <input type="text" placeholder="기본 URL 입력" class="w-full border px-4 py-2 rounded">
-      <div class="grid grid-cols-2 gap-4">
-        <input placeholder="캠페인 소스 (utm_source)" class="border px-3 py-2 rounded">
-        <input placeholder="매체 (utm_medium)" class="border px-3 py-2 rounded">
-      </div>
-      <button class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">UTM 링크 생성</button>
-    </div>
-  </main>
+  <main class="flex-grow container mx-auto px-4 py-10">
+        <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 space-y-6 max-w-3xl mx-auto">
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-bold text-gray-800">🎯 UTM 코드 생성기</h1>
+                <p class="text-gray-600 mt-1">캠페인 성과 측정을 위한 UTM 링크를 손쉽게 만드세요.</p>
+            </div>
 
-<!-- main page -->
-    <div id="footer-placeholder"></div>
-    
+            <div class="space-y-4">
+                <div>
+                    <label for="baseUrl" class="block text-sm font-medium text-gray-700 mb-1">
+                        기본 URL <span class="text-red-500">*</span>
+                        <span class="tooltip">
+                            ℹ️
+                            <span class="tooltiptext">UTM 파라미터를 추가할 웹사이트 주소 (예: https://www.example.com)</span>
+                        </span>
+                    </label>
+                    <input type="url" id="baseUrl" placeholder="https://www.example.com" class="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="utmSource" class="block text-sm font-medium text-gray-700 mb-1">
+                            캠페인 소스 (utm_source) <span class="text-red-500">*</span>
+                            <span class="tooltip">
+                                ℹ️
+                                <span class="tooltiptext">트래픽 출처 (예: google, naver, newsletter)</span>
+                            </span>
+                        </label>
+                        <input type="text" id="utmSource" placeholder="예: google" class="w-full border border-gray-300 px-3 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="utmMedium" class="block text-sm font-medium text-gray-700 mb-1">
+                            캠페인 매체 (utm_medium) <span class="text-red-500">*</span>
+                             <span class="tooltip">
+                                ℹ️
+                                <span class="tooltiptext">마케팅 매체 (예: cpc, banner, email)</span>
+                            </span>
+                        </label>
+                        <input type="text" id="utmMedium" placeholder="예: cpc" class="w-full border border-gray-300 px-3 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="utmCampaign" class="block text-sm font-medium text-gray-700 mb-1">
+                        캠페인 이름 (utm_campaign) <span class="text-red-500">*</span>
+                        <span class="tooltip">
+                            ℹ️
+                            <span class="tooltiptext">캠페인, 프로모션 이름 (예: summer_sale)</span>
+                        </span>
+                    </label>
+                    <input type="text" id="utmCampaign" placeholder="예: summer_promotion" class="w-full border border-gray-300 px-3 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="utmTerm" class="block text-sm font-medium text-gray-700 mb-1">
+                            캠페인 검색 키워드 (utm_term)
+                            <span class="tooltip">
+                                ℹ️
+                                <span class="tooltiptext">유료 검색 광고 키워드 (선택 사항)</span>
+                            </span>
+                        </label>
+                        <input type="text" id="utmTerm" placeholder="예: running_shoes (선택)" class="w-full border border-gray-300 px-3 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="utmContent" class="block text-sm font-medium text-gray-700 mb-1">
+                            캠페인 콘텐츠 (utm_content)
+                            <span class="tooltip">
+                                ℹ️
+                                <span class="tooltiptext">A/B 테스트나 콘텐츠 구분 (선택 사항)</span>
+                            </span>
+                        </label>
+                        <input type="text" id="utmContent" placeholder="예: logolink_v1 (선택)" class="w-full border border-gray-300 px-3 py-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 mt-6">
+                <button id="generateBtn" class="w-full sm:w-auto bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 font-medium btn-action">
+                    🚀 UTM 링크 생성
+                </button>
+                <button id="resetBtn" class="w-full sm:w-auto bg-gray-200 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 font-medium btn-action">
+                    ✨ 초기화
+                </button>
+            </div>
+
+            <div id="resultArea" class="mt-6 p-4 bg-gray-50 rounded-md shadow-inner" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">생성된 UTM 링크:</h3>
+                <div class="relative">
+                    <textarea id="generatedUrl" readonly class="w-full p-3 border border-gray-300 rounded-md bg-white resize-none focus:ring-indigo-500 focus:border-indigo-500" rows="3"></textarea>
+                    <button id="copyBtn" class="absolute top-2 right-2 bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 text-sm btn-action">복사</button>
+                </div>
+                <p id="copyFeedback" class="text-sm text-green-600 mt-1" style="display: none;">복사되었습니다!</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder" class="mt-auto"></div>
+
     <script>
-      fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-placeholder').innerHTML = data;
+        // 네비게이션 메뉴 토글
+        const menuToggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        menuToggle.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            // 아이콘 변경 (선택 사항)
+            if (menu.classList.contains('hidden')) {
+                menuToggle.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>`;
+            } else {
+                menuToggle.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+            }
         });
-    </script>
 
+        // UTM 생성 로직
+        const baseUrlInput = document.getElementById('baseUrl');
+        const utmSourceInput = document.getElementById('utmSource');
+        const utmMediumInput = document.getElementById('utmMedium');
+        const utmCampaignInput = document.getElementById('utmCampaign');
+        const utmTermInput = document.getElementById('utmTerm');
+        const utmContentInput = document.getElementById('utmContent');
+        const generateBtn = document.getElementById('generateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const resultArea = document.getElementById('resultArea');
+        const generatedUrlTextarea = document.getElementById('generatedUrl');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyFeedback = document.getElementById('copyFeedback');
+
+        // 필수 입력 필드 배열
+        const requiredFields = [baseUrlInput, utmSourceInput, utmMediumInput, utmCampaignInput];
+
+        function validateAndGenerateUrl() {
+            let isValid = true;
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            // 기본 URL 유효성 검사 (간단한 형태)
+            if (baseUrlInput.value.trim() && !isValidUrl(baseUrlInput.value.trim())) {
+                baseUrlInput.classList.add('border-red-500');
+                alert('유효한 URL 형식이 아닙니다. (예: https://example.com)');
+                isValid = false;
+            }
+
+
+            if (!isValid) {
+                resultArea.style.display = 'none';
+                alert('필수 입력값을 모두 채워주세요.');
+                return;
+            }
+
+            let url = baseUrlInput.value.trim();
+            const params = new URLSearchParams();
+
+            if (utmSourceInput.value.trim()) params.append('utm_source', utmSourceInput.value.trim());
+            if (utmMediumInput.value.trim()) params.append('utm_medium', utmMediumInput.value.trim());
+            if (utmCampaignInput.value.trim()) params.append('utm_campaign', utmCampaignInput.value.trim());
+            if (utmTermInput.value.trim()) params.append('utm_term', utmTermInput.value.trim());
+            if (utmContentInput.value.trim()) params.append('utm_content', utmContentInput.value.trim());
+
+            const queryString = params.toString();
+            if (queryString) {
+                generatedUrlTextarea.value = `${url}${url.includes('?') ? '&' : '?'}${queryString}`;
+                resultArea.style.display = 'block';
+                copyFeedback.style.display = 'none'; // 복사 피드백 초기화
+            } else {
+                 generatedUrlTextarea.value = url; // 파라미터가 없으면 기본 URL만 표시
+                 resultArea.style.display = 'block';
+            }
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        generateBtn.addEventListener('click', validateAndGenerateUrl);
+
+        // 입력 필드에서 Enter 키 눌렀을 때 생성
+        [baseUrlInput, utmSourceInput, utmMediumInput, utmCampaignInput, utmTermInput, utmContentInput].forEach(input => {
+            input.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // 폼 제출 방지 (만약 form 태그 안에 있다면)
+                    validateAndGenerateUrl();
+                }
+            });
+        });
+
+
+        copyBtn.addEventListener('click', () => {
+            generatedUrlTextarea.select();
+            document.execCommand('copy'); // Deprecated지만, 클립보드 API는 https 또는 localhost 에서만 주로 동작
+            // navigator.clipboard.writeText(generatedUrlTextarea.value) 보다 구형 브라우저 호환성이 좋음
+            // 최신 방식: navigator.clipboard.writeText(generatedUrlTextarea.value).then(...)
+            copyFeedback.textContent = '✅ 복사되었습니다!';
+            copyFeedback.style.display = 'block';
+            setTimeout(() => {
+                copyFeedback.style.display = 'none';
+            }, 2000);
+        });
+
+        resetBtn.addEventListener('click', () => {
+            baseUrlInput.value = '';
+            utmSourceInput.value = '';
+            utmMediumInput.value = '';
+            utmCampaignInput.value = '';
+            utmTermInput.value = '';
+            utmContentInput.value = '';
+            resultArea.style.display = 'none';
+            generatedUrlTextarea.value = '';
+            copyFeedback.style.display = 'none';
+            requiredFields.forEach(field => field.classList.remove('border-red-500'));
+        });
+
+        // Footer 로드
+        fetch('footer.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Footer not found');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => {
+                console.warn('Footer loading failed:', error);
+                // document.getElementById('footer-placeholder').innerHTML = '<p class="text-center text-gray-500 py-4">Footer could not be loaded.</p>';
+            });
+    </script>
 </body>
 </html>
