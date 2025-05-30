@@ -124,7 +124,6 @@ body {
   50% { opacity: 1; }
 }
 
-
 /* index.html 스타일 */
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 header { text-align: center; padding: 40px 0; background-color: #02855B; color: white; }
@@ -226,3 +225,59 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
   color: rgba(255, 255, 255, 0.9) !important;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 }
+
+/* url-bulider.html 스타일 */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  }
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 220px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -110px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  }
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+  }
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  }
+/* 입력 필드 포커스 시 그림자 효과 */
+input[type="text"]:focus, input[type="url"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5); /* Tailwind의 blue-300과 유사 */
+  border-color: rgba(96, 165, 250, 1); /* Tailwind의 blue-500과 유사 */
+  }
+/* 버튼 호버/포커스 시 미세한 크기 변화 */
+.btn-action {
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  }
+.btn-action:hover {
+  transform: translateY(-1px);
+  }
+.btn-action:active {
+  transform: translateY(0px);
+  }
