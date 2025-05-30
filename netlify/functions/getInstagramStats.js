@@ -7,7 +7,7 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const response = await fetch(`https://instagram-public-data-api-url/user/${username}`, {
+    const response = await fetch(`https://instagram-public-bulk-scraper.p.rapidapi.com/ig/user_followers/?username=${username}`, {
       method: 'GET',
       headers: {
         'X-RapidAPI-Key': '45b31f709dmshb13fc5dd2b49e08p1a16dcjsne8c1be7b6770',
