@@ -31,33 +31,23 @@
     </nav>
     
     <!-- Hero 섹션 -->
-    <section class="relative w-full h-[500px] overflow-hidden rounded-xl shadow-lg my-10">
-      <div class="absolute inset-0 z-0">
-        <div class="swiper-container w-full h-full">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide bg-cover bg-center" style="background-image: url('/images/slide1.jpg');"></div>
-            <div class="swiper-slide bg-cover bg-center" style="background-image: url('/images/slide2.jpg');"></div>
-            <div class="swiper-slide bg-cover bg-center" style="background-image: url('/images/slide3.jpg');"></div>
-          </div>
-        </div>
-      </div>
-      <div class="relative z-10 flex flex-col items-center justify-center text-center h-full px-6 bg-white/70 backdrop-blur-md">
-        <h1 class="text-4xl md:text-5xl font-bold text-indigo-700 mb-4 leading-tight">
-          마케터의 시간을 줄여주는<br><span class="text-pink-600">스마트 도구 모음</span>
-        </h1>
-        <p class="text-gray-700 text-lg md:text-xl mb-6">
-          UTM 생성부터 대시보드 자동화까지, 지금 바로 시작하세요!
-        </p>
-        <a href="#tools" class="px-8 py-3 bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700 transition">
-          도구 모아보기
-        </a>
-      </div>
-    </section>
+    <section class="relative py-20 px-6 text-center bg-gradient-to-br from-indigo-50 to-pink-50 rounded-xl shadow-lg max-w-6xl mx-auto mt-10">
+      <img src="/images/marketer-illustration.svg" alt="마케터 일러스트" class="mx-auto w-72 md:w-96 mb-10 drop-shadow-md">
+      
+      <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-700 mb-6 leading-tight tracking-tight">
+        마케터를 위한<br><span class="text-pink-600">스마트 자동화 도구</span>
+      </h1>
+      
+      <p class="text-gray-600 text-lg md:text-xl mb-10">
+        귀찮은 반복 업무는 도구에 맡기고, 전략에 집중하세요.<br class="hidden md:block">
+        실무 마케터를 위한 자동화와 분석 툴이 한 자리에.
+      </p>
     
-    <!-- Swiper 라이브러리 추가 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+      <!-- 스크롤 유도 아이콘 -->
+      <div class="animate-bounce text-indigo-400 text-3xl mt-6">⬇️</div>
+    </section>
 
+    
     <section class="my-12 px-4 max-w-5xl mx-auto bg-transparent shadow-none">
       <div class="mb-6 flex items-center justify-between">
         <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
@@ -79,17 +69,6 @@
         .then(data => {
           document.getElementById('footer-placeholder').innerHTML = data;
         });
-    </script>
-
-    <script>
-      new Swiper('.swiper-container', {
-        loop: true,
-        autoplay: {
-          delay: 3500,
-          disableOnInteraction: false,
-        },
-        effect: 'fade',
-      });
     </script>
 
     <script>
