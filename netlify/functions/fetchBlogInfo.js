@@ -1,28 +1,29 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
+const cheerio = require("cheerio");
 
-exports.handler = async function(event, context) {
+exports.handler = async function (event, context) {
   const blogId = event.queryStringParameters.blogId;
 
-  if (!blogId) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: '블로그 ID가 필요합니다.' }),
-    };
-  }
-
   try {
-    // ✨ 여기를 진짜 API 주소로 바꿔주세요!
-    const externalResponse = await fetch(`https://external-api.com/blog/${blogId}`);
-    const data = await externalResponse.json();
+    const res = await fetch(`https://blog.naver.com/${blogId}`);
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    const nickname = $("meta[property='og:title']").attr("content");
+    const description = $("meta[property='og:description']").attr("content");
 
     return {
       statusCode: 200,
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        blogId,
+        nickname: nickname || "정보 없음",
+        description: description || "설명 없음",
+      }),
     };
-  } catch (error) {
+  } catch (e) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: '외부 API 호출 중 오류가 발생했습니다.', details: error.message }),
+      body: JSON.stringify({ error: "크롤링 실패", details: e.message }),
     };
   }
 };
