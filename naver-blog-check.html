@@ -32,11 +32,12 @@
         </div>
     </nav>
 
-  <form id="blogForm">
-    <input type="text" id="blogId" placeholder="블로그 ID 입력" required />
-    <button type="submit">검색</button>
-  </form>
-  <div id="result"></div>
+<form id="blogForm" class="flex flex-col md:flex-row items-center justify-center gap-2 p-4">
+  <input type="text" id="blogId" placeholder="블로그 ID 입력" required
+         class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+  <button type="submit"
+          class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition">검색</button>
+</form>
 
   <script>
   document.getElementById('blogForm').addEventListener('submit', async (e) => {
@@ -49,13 +50,16 @@
       const data = await response.json();
   
       if (response.ok) {
-        resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        resultDiv.innerHTML = `
+          <div class="bg-white shadow rounded p-4 mt-4">
+            <p><strong>블로그 이름:</strong> ${data.blogName}</p>
+            <p><strong>포스트 수:</strong> ${data.postCount}</p>
+            <p><strong>최근 글 제목:</strong> ${data.recentPostTitle}</p>
+          </div>
+        `;
       } else {
-        resultDiv.textContent = data.error;
+        resultDiv.innerHTML = `<p class="text-red-500 mt-4">😥 오류가 발생했어요. 인터넷 연결을 확인하거나 블로그 ID를 다시 확인해 주세요!</p>`;
       }
-    } catch (error) {
-      resultDiv.textContent = '오류가 발생했습니다.';
-    }
   });
   </script>
 
@@ -106,43 +110,6 @@
           urlInput.focus();
           urlInput.value = '';
         }
-      });
-    </script>
-
-    <script>
-      const container = document.getElementById("marketingNews");
-    
-      function highlightNearestCard() {
-        const cards = container.querySelectorAll(".news-card");
-        const containerRect = container.getBoundingClientRect();
-        const centerY = containerRect.top + containerRect.height / 2;
-    
-        let closestCard = null;
-        let closestDistance = Infinity;
-    
-        cards.forEach((card) => {
-          const rect = card.getBoundingClientRect();
-          const cardCenter = rect.top + rect.height / 2;
-          const distance = Math.abs(centerY - cardCenter);
-    
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestCard = card;
-          }
-        });
-    
-        // 스타일 초기화 및 강조 적용
-        cards.forEach((card) => card.classList.remove("active"));
-        if (closestCard) closestCard.classList.add("active");
-      }
-    
-      // 스크롤 시마다 실행
-      container.addEventListener("scroll", () => {
-        window.requestAnimationFrame(highlightNearestCard);
-      });
-    
-      // 초기 실행
-      window.addEventListener("load", () => {
       });
     </script>
     
