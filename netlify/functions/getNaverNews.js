@@ -8,8 +8,8 @@ exports.handler = async function(event) {
   try {
     const res = await fetch(url, {
       headers: {
-        'X-Naver-Client-Id': 'v_qk9AMOLoRyxy6VP6_9',
-        'X-Naver-Client-Secret': '9LUBV1ooso'
+        'X-Naver-Client-Id': clientId,
+        'X-Naver-Client-Secret': clientSecret,
       }
     });
 
