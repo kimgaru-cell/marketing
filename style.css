@@ -81,14 +81,6 @@ body {
   }
 }
 
-/* 다크 모드 대응 */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121212;
-    color: #eee;
-  }
-}
-
 /* --- 활성 메뉴 스타일 --- */
 #menu a.active-menu {
   font-weight: bold;
