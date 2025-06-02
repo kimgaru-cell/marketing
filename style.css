@@ -105,6 +105,10 @@ body {
   transition: 0.3s ease;
 }
 
+.hamburger.open span {
+  transform-origin: center;
+}
+
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 4px);
