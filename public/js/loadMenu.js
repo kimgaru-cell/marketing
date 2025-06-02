@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const linkPath = link.getAttribute('href');
 
         if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
-          link.classList.add('text-indigo-600', 'bg-indigo-50', 'rounded-md', 'font-medium');
+          link.classList.add('text-indigo-600', 'bg-indigo-50', 'rounded-md', 'font-medium', 'active-menu');
         } else {
           link.classList.add('text-gray-700', 'hover:text-indigo-600', 'font-medium', 'transition', 'rounded-md', 'hover:bg-indigo-50');
         }
@@ -25,10 +25,20 @@ document.addEventListener('DOMContentLoaded', function () {
       // 햄버거 메뉴 토글
       const toggleBtn = document.getElementById('menu-toggle');
       const menu = document.getElementById('menu');
+      const overlay = document.getElementById('menu-overlay');
+      
       if (toggleBtn && menu) {
         toggleBtn.addEventListener('click', function () {
-          menu.classList.toggle('menu-open');
-          toggleBtn.classList.toggle('open'); // 햄버거 → X
+          const isOpen = menu.classList.toggle('menu-open');
+          toggleBtn.classList.toggle('open', isOpen);
+          overlay?.classList.toggle('active', isOpen);
+        });
+      
+        // ✅ 오버레이 클릭 시 메뉴 닫기
+        overlay?.addEventListener('click', () => {
+          menu.classList.remove('menu-open');
+          toggleBtn.classList.remove('open');
+          overlay.classList.remove('active');
         });
       }
 
