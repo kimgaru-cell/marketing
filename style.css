@@ -15,28 +15,22 @@ body {
 /* 모바일 메뉴 스타일 */
 @media (max-width: 767px) {
   #menu {
+    display: none;
+  }
+
+  #menu.menu-open {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 60px;
     left: 0;
     width: 100%;
-    background-color: #f3f4f6;
-    border-bottom: 1px solid #d1d5db;
+    background-color: #ffffff;
     padding: 1rem;
     z-index: 50;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transform: translateX(100%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    visibility: hidden;
   }
-
-  #menu.menu-open {
-    visibility: visible;
-    transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
+}
 
   #menu li {
     margin-bottom: 0.5rem;
