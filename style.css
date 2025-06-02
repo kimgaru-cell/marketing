@@ -52,6 +52,14 @@ body {
     font-weight: 500;
     color: #333;
   }
+
+  #menu-overlay {
+    display: none;
+  }
+
+  #menu-overlay.active {
+    display: block;
+  }
 }
 
 /* 데스크탑 메뉴 스타일 */
