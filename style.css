@@ -87,21 +87,19 @@ body {
 
 /* 햄버거 버튼 애니메이션 스타일 */
 .hamburger {
+  width: 24px;
+  height: 18px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  width: 30px;
-  height: 30px;
+  justify-content: space-between;
   cursor: pointer;
+  padding: 0;
   z-index: 1001;
 }
 
 .hamburger span {
-  display: block;
   height: 2px;
-  width: 100%;
-  background-color: #333;
+  background-color: #111;
   border-radius: 1px;
   transition: all 0.3s ease;
   transform-origin: center;
@@ -109,13 +107,13 @@ body {
 
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translateY(7px);
+  transform: rotate(45deg) translate(4px, 4px);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translateY(-7px);
+  transform: rotate(-45deg) translate(4px, -4px);
 }
 
 /* --- 기타 공통 스타일 --- */
