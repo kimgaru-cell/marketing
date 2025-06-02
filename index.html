@@ -115,48 +115,49 @@
                   const domain = new URL(item.originallink || item.link).hostname;
         
                   const publisherPromise = fetch('/.netlify/functions/getPublisher?url=' + encodeURIComponent(originallink))
-                    .then(res => res.json())
-                    .then(publisherData => {
-                      const publisher = publisherData.publisher || ''; // publisher가 undefined인 경우 빈 문자열로 설정
-                      const parser = new DOMParser();
-                      const doc = parser.parseFromString(item.description, 'text/html');
-                      const img = doc.querySelector('img');
-                      const imageUrl = img ? img.src : null;
-                      
-                      // 뉴스 HTML 템플릿
-                      return `
-                        <div class="news-card snap-item flex bg-white rounded-lg shadow p-4 mb-4 hover:shadow-lg transition">
-                          ${imageUrl ? `<img src="${imageUrl}" alt="썸네일" class="w-20 h-20 object-cover rounded mr-4">` : ''}
-                          <div class="flex-1">
-                            <div class="flex justify-between text-sm text-gray-500 mb-1">
-                              <span class="news-source font-medium text-indigo-600">${publisher}</span>
-                              <span class="news-date">${date}</span>
+                      .then(res => res.json())
+                      .then(publisherData => {
+                        const publisher = publisherData.publisher || '';
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(item.description, 'text/html');
+                        const img = doc.querySelector('img');
+                        const imageUrl = img ? img.src : null;
+                    
+                        return `
+                          <div class="news-card snap-item flex bg-white rounded-lg shadow p-4 mb-4 hover:shadow-lg transition">
+                            ${imageUrl ? `<img src="${imageUrl}" alt="썸네일" class="w-20 h-20 object-cover rounded mr-4">` : ''}
+                            <div class="flex-1">
+                              <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span class="news-source font-medium text-indigo-600">${publisher}</span>
+                                <span class="news-date">${date}</span>
+                              </div>
+                              <h3 class="text-md font-semibold text-gray-800 leading-snug line-clamp-2">
+                                <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
+                                  ${title}
+                                </a>
+                              </h3>
                             </div>
-                            <h3 class="text-md font-semibold text-gray-800 leading-snug line-clamp-2">
-                              <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
-                                ${title}
-                              </a>
-                            </h3>
                           </div>
-                        </div>
-                      `;
+                        `;
+                      })
                       .catch(error => {
                         console.error('언론사 정보 로딩 실패:', error);
                         return `
-                        <div class="news-card snap-item">
-                          <div class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-1 duration-200">
-                          <div class="flex justify-between text-sm text-gray-500 mb-1">
-                            <span class="news-source font-medium text-indigo-600">${domain}</span>
-                            <span class="news-date">${date}</span>
+                          <div class="news-card snap-item flex bg-white rounded-lg shadow p-4 mb-4 hover:shadow-lg transition">
+                            <div class="flex-1">
+                              <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span class="news-source font-medium text-indigo-600">${domain}</span>
+                                <span class="news-date">${date}</span>
+                              </div>
+                              <h3 class="text-md font-semibold text-gray-800 leading-snug line-clamp-2">
+                                <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
+                                  ${title}
+                                </a>
+                              </h3>
+                            </div>
                           </div>
-                          <h3 class="text-lg font-semibold text-gray-800 leading-snug line-clamp-2">
-                            <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
-                              ${title}
-                            </a>
-                          </h3>
-                        </div>
-                          `;
-                        });
+                        `;
+                      });
         
                   fetchPromises.push(publisherPromise);
                 });
