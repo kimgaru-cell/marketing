@@ -109,6 +109,7 @@ body {
 
 .hamburger:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
 
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
