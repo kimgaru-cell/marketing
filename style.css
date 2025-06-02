@@ -85,20 +85,24 @@ body {
   color: #1d4870; /* Fassto 녹색 */
 }
 
-/* 햄버거 버튼 애니메이션 스타일 */
+/* 햄버거 버튼 */
 .hamburger {
-  width: 28px;
-  height: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  cursor: pointer;
-  z-index: 1001;
+  width: 28px;
+  height: 20px;
   padding: 8px;
   border-radius: 6px;
+  cursor: pointer;
+  z-index: 1001;
+  background-color: transparent;
+  gap: 5px;
 }
 
+/* 햄버거 막대 (기본 3줄) */
 .hamburger span {
+  display: block;
   width: 100%;
   height: 2px;
   background-color: #111;
@@ -107,18 +111,20 @@ body {
   transform-origin: center;
 }
 
-/* 호버 효과 */
+/* hover 효과 (선택) */
 .hamburger:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* 햄버거 → X 변환 */
+/* 햄버거 → X 전환 */
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translateY(6px);
 }
+
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.open span:nth-child(3) {
   transform: rotate(-45deg) translateY(-6px);
 }
