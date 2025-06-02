@@ -107,6 +107,7 @@ body {
 
 .hamburger.open span {
   transform-origin: center;
+  transition: all 0.3s ease;
 }
 
 /* 햄버거 → X 변환 */
