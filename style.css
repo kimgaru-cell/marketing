@@ -90,30 +90,32 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   width: 30px;
   height: 30px;
+  cursor: pointer;
   z-index: 1001;
 }
 
 .hamburger span {
   display: block;
-  height: 3px;
+  height: 2px;
   width: 100%;
   background-color: #333;
-  border-radius: 2px;
-  transition: 0.3s ease;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transform-origin: center;
 }
 
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+  transform: rotate(45deg) translateY(7px);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+  transform: rotate(-45deg) translateY(-7px);
 }
 
 /* --- 기타 공통 스타일 --- */
