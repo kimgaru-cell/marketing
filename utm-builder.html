@@ -306,6 +306,7 @@
       if (toggleBtn && menu) {
         toggleBtn.addEventListener('click', function () {
           menu.classList.toggle('menu-open');
+          toggleBtn.classList.toggle('open'); // 햄버거 → X 전환
         });
       }
   
