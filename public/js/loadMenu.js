@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
           link.classList.add('text-indigo-600', 'bg-indigo-50', 'rounded-md', 'font-medium', 'active-menu');
         } else {
-          link.classList.add('text-gray-700', 'hover:text-indigo-600', 'font-medium', 'transition', 'rounded-md', 'hover:bg-indigo-50');
+          link.classList.add('text-gray-800', 'hover:text-white', 'hover:bg-indigo-500', 'font-semibold', 'transition', 'rounded-md', 'px-3', 'py-1');
         }
       });
 
