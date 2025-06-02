@@ -97,7 +97,7 @@ body {
 
 /* 햄버거 버튼 애니메이션 스타일 */
 .hamburger {
-  display: flex;
+  display: none !important;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
