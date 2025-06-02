@@ -112,14 +112,13 @@ body {
 
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(4px, 1px);
+  transform: rotate(45deg) translate(5px, 4px);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(4px, -6px);
-}
+  transform: rotate(-45deg) translate(5px, -6px);
 
 /* --- 기타 공통 스타일 --- */
 /* 푸터 등 다른 모든 페이지에 공통으로 적용될 스타일이 있다면 여기에 추가 */
