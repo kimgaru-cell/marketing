@@ -93,7 +93,6 @@ body {
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  padding: 0;
   z-index: 1001;
   padding: 8px;
   border-radius: 6px;
