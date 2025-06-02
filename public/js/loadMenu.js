@@ -16,9 +16,26 @@ document.addEventListener('DOMContentLoaded', function () {
         const linkPath = link.getAttribute('href');
 
         if (linkPath === currentPath || (currentPath === '' && linkPath === 'index.html')) {
-          link.classList.add('text-indigo-600', 'bg-indigo-50', 'rounded-md', 'font-medium', 'active-menu');
+          link.classList.add(
+            'text-white',
+            'bg-indigo-600',
+            'rounded-md',
+            'font-semibold',
+            'px-3',
+            'py-1',
+            'active-menu'
+          );
         } else {
-          link.classList.add('text-gray-800', 'hover:text-white', 'hover:bg-indigo-500', 'font-semibold', 'transition', 'rounded-md', 'px-3', 'py-1');
+          link.classList.add(
+            'text-gray-800',
+            'hover:text-white',
+            'hover:bg-indigo-500',
+            'font-semibold',
+            'transition',
+            'rounded-md',
+            'px-3',
+            'py-1'
+          );
         }
       });
 
