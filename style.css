@@ -92,8 +92,9 @@ body {
 /* --- 활성 메뉴 스타일 --- */
 #menu a.active-menu {
   font-weight: bold;
-  color: #1d4870;
-  border-bottom: 2px solid #1d4870;
+  color: #4f46e5;
+  border-left: 4px solid #4f46e5;
+  background-color: #eef2ff;
 }
 
 /* 햄버거 버튼 애니메이션 */
