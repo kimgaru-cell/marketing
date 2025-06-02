@@ -13,6 +13,7 @@ body {
   #menu {
     position: absolute;
     top: 60px; /* 네비게이션 바 높이에 맞춰 조정 필요할 수 있음 */
+    right: auto; 
     left: 0;
     width: 100%;
     background-color: #f3f4f6; /* 메뉴 배경색 */
@@ -22,15 +23,17 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
 
     /* 슬라이드 애니메이션 기본 상태 (숨김) */
-    transform: translateX(-100%);
+    transform: translateX(100%);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    display: block; /* 항상 block 상태여야 transition 작동함 */
+    /*display: block; */
+    visibility: hidden;
   }
 
   /* 슬라이드 인 상태 */
   #menu.menu-open {
+    visibility: visible;
     transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
@@ -76,11 +79,20 @@ body {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #eee;
+  }
+  /* 필요한 요소들 색상 조정 */
+}
+
 /* --- 활성 메뉴 스타일 --- */
 /* 현재 보고 있는 페이지 메뉴에 적용될 스타일 */
 #menu a.active-menu {
   font-weight: bold; /* 굵은 글씨 */
   color: #1d4870; /* Fassto 녹색 */
+  border-bottom: 2px solid #1d4870;
 }
 
 /* 햄버거 버튼 애니메이션 스타일 */
@@ -110,13 +122,13 @@ body {
 
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 4px);
+  transform: rotate(45deg) translate(5px, 5px);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -6px);
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 /* --- 기타 공통 스타일 --- */
 /* 푸터 등 다른 모든 페이지에 공통으로 적용될 스타일이 있다면 여기에 추가 */
@@ -256,7 +268,7 @@ footer { text-align: center; padding: 20px; background-color: #333; color: white
 .news-card:not(.active) .news-date,
 .news-card:not(.active) a {
   color: rgba(255, 255, 255, 0.9) !important;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
 /* url-bulider.html 스타일 */
