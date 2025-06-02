@@ -87,8 +87,8 @@ body {
 
 /* 햄버거 버튼 애니메이션 스타일 */
 .hamburger {
-  width: 24px;
-  height: 18px;
+  width: 28px;
+  height: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -107,19 +107,20 @@ body {
   transform-origin: center;
 }
 
+/* 호버 효과 */
 .hamburger:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* 햄버거 → X 변환 */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(4px, 4px);
+  transform: rotate(45deg) translateY(6px);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(4px, -4px);
+  transform: rotate(-45deg) translateY(-6px);
 }
 
 /* --- 기타 공통 스타일 --- */
