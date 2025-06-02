@@ -131,6 +131,11 @@ body {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+#menu a.active-menu {
+  box-shadow: inset 0 -2px 0 0 #fff;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
 /* index.html 스타일 */
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 header { text-align: center; padding: 40px 0; background-color: #02855B; color: white; }
