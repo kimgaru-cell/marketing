@@ -1,5 +1,9 @@
 const Parser = require('rss-parser');
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+    item: ['content:encoded']
+  }
+});
 
 function extractImageUrlFrom(html) {
   const match = html.match(/<img[^>]+src=["']?([^>"']+)["']?/i);
@@ -9,7 +13,7 @@ function extractImageUrlFrom(html) {
 exports.handler = async function (event) {
   const blogId = event.queryStringParameters.blogId;
   const feedUrl = `https://blog.rss.naver.com/${blogId}.xml`;
-  
+
   try {
     const feed = await parser.parseURL(feedUrl);
     const blogName = feed.title || "블로그 이름 없음";
@@ -17,7 +21,7 @@ exports.handler = async function (event) {
     const description = feed.description || "";
 
     const recentPosts = feed.items.slice(0, 5).map(item => {
-      const contentHtml = item.content || item.contentSnippet || "";
+      const contentHtml = item['content:encoded'] || item.content || item.contentSnippet || "";
       return {
         title: item.title,
         link: item.link,
@@ -37,3 +41,4 @@ exports.handler = async function (event) {
     };
   }
 };
+
