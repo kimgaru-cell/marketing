@@ -85,7 +85,7 @@
           const keywords = extractKeywords(data.recentPosts.map(p => p.title));
           const keywordHTML = keywords.map(([word, count]) => `<span class="keyword-badge">${word} (${count})</span>`).join('');
 
-          resultDiv.innerHTML = `
+          resultDiv.innerHTML = `<p class="text-gray-500 text-center mt-6 animate-pulse">⏳ 로딩 중입니다...</p>`;
             <div class="bg-white shadow-md rounded-lg p-6 mt-6 mb-20 border border-gray-200">
               <h2 class="text-xl font-bold text-gray-800 mb-2">📘 ${data.blogName}</h2>
               <p class="text-gray-600 mb-3 text-sm">총 <span class="font-semibold">${data.postCount}</span>개의 글이 검색되었습니다.</p>
