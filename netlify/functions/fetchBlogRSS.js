@@ -9,12 +9,16 @@ exports.handler = async function (event) {
     const feed = await parser.parseURL(feedUrl);
     const blogName = feed.title || "블로그 이름 없음";
     const postCount = feed.items.length;
-    const recentPostTitle = feed.items[0]?.title || "최근 글 없음";
-    const recentPostLink = feed.items[0]?.link || "#";
+
+    const recentPosts = feed.items.slice(0, 5).map(item => ({
+      title: item.title,
+      link: item.link,
+      pubDate: item.pubDate
+    }));
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ blogName, postCount, recentPostTitle, recentPostLink }),
+      body: JSON.stringify({ blogName, postCount, recentPosts }),
     };
   } catch (error) {
     return {
