@@ -1,9 +1,5 @@
-const Parser = require('rss-parser');
-const parser = new Parser({
-  customFields: {
-    item: ['content:encoded']
-  }
-});
+const axios = require('axios');
+const xml2js = require('xml2js');
 
 function extractImageUrlFrom(html) {
   const match = html.match(/<img[^>]+src=["']?([^>"']+)["']?/i);
@@ -15,13 +11,18 @@ exports.handler = async function (event) {
   const feedUrl = `https://blog.rss.naver.com/${blogId}.xml`;
 
   try {
-    const feed = await parser.parseURL(feedUrl);
-    const blogName = feed.title || "블로그 이름 없음";
-    const postCount = feed.items.length;
-    const description = feed.description || "";
+    const response = await axios.get(feedUrl);
+    const parsed = await xml2js.parseStringPromise(response.data, { explicitArray: false });
 
-    const recentPosts = feed.items.slice(0, 5).map(item => {
-      const contentHtml = item['content:encoded'] || item.content || item.contentSnippet || "";
+    const channel = parsed.rss.channel;
+    const items = Array.isArray(channel.item) ? channel.item : [channel.item];
+
+    const blogName = channel.title || "블로그 이름 없음";
+    const description = channel.description || "";
+    const postCount = items.length;
+
+    const recentPosts = items.slice(0, 5).map(item => {
+      const contentHtml = item['content:encoded'] || item.description || "";
       return {
         title: item.title,
         link: item.link,
@@ -41,4 +42,3 @@ exports.handler = async function (event) {
     };
   }
 };
-
