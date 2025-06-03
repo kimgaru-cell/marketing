@@ -74,7 +74,8 @@
         if (response.ok) {
           const postCards = data.recentPosts.map(post => `
             <div class="flex items-start gap-4 mb-4">
-              ${post.thumbnail ? `<img src="${post.thumbnail}" alt="썸네일" class="w-24 h-24 object-cover rounded border" />` : ''}
+              <img src="${post.thumbnail || 'https://via.placeholder.com/96x96?text=No+Image'}"
+                   alt="썸네일" class="w-24 h-24 object-cover rounded border" />
               <div>
                 <a href="${post.link}" target="_blank" class="text-indigo-700 font-medium hover:underline">${post.title}</a>
                 <div class="text-sm text-gray-500 mt-1">${new Date(post.pubDate).toLocaleDateString()}</div>
