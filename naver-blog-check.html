@@ -9,15 +9,18 @@
   <link rel="stylesheet" href="style.css">
   <style>
     html { scroll-behavior: smooth; }
+    
     .keyword-badge {
       display: inline-block;
-      background-color: #e0e7ff;
-      color: #3730a3;
-      padding: 4px 8px;
-      border-radius: 6px;
+      background-color: #eef2ff;
+      color: #4338ca;
+      padding: 4px 10px;
+      border-radius: 9999px;
       margin-right: 6px;
       margin-bottom: 6px;
       font-size: 0.85rem;
+      font-weight: 500;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
   </style>
 </head>
@@ -73,9 +76,10 @@
 
         if (response.ok) {
           const postCards = data.recentPosts.map(post => `
-            <div class="flex items-start gap-4 mb-4">
-              <img src="${post.thumbnail || 'https://via.placeholder.com/96x96?text=No+Image'}"
-                   alt="썸네일" class="w-24 h-24 object-cover rounded border" />
+            <div class="flex items-center gap-4 mb-4">
+              <img src="${post.thumbnail || 'https://placehold.co/96x96?text=No+Image&font=inter'}"
+               alt="${post.thumbnail ? '썸네일' : '기본 이미지'}"
+               class="w-24 h-24 object-cover rounded border" />
               <div>
                 <a href="${post.link}" target="_blank" class="text-indigo-700 font-medium hover:underline">${post.title}</a>
                 <div class="text-sm text-gray-500 mt-1">${new Date(post.pubDate).toLocaleDateString()}</div>
