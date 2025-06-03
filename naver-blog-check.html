@@ -77,9 +77,9 @@
         if (response.ok) {
           const postCards = data.recentPosts.map(post => `
             <div class="flex items-center gap-4 mb-4">
-              <img src="${post.thumbnail || 'https://placehold.co/96x96?text=No+Image&font=inter'}"
-               alt="${post.thumbnail ? '썸네일' : '기본 이미지'}"
-               class="w-24 h-24 object-cover rounded border" />
+              <img src="${post.thumbnail || 'https://placehold.co/96x96?text=No+Image'}"
+                   alt="썸네일"
+                   class="w-24 h-24 object-cover rounded border" />
               <div>
                 <a href="${post.link}" target="_blank" class="text-indigo-700 font-medium hover:underline">${post.title}</a>
                 <div class="text-sm text-gray-500 mt-1">${new Date(post.pubDate).toLocaleDateString()}</div>
