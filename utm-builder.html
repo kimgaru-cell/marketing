@@ -10,11 +10,8 @@
 </head>
 
 <body>
-<!-- 메뉴 삽입 위치 -->
+<!-- 헤더 영역 -->
 <div id="menu-container"></div>
-
-<!-- 메뉴 스크립트 -->
-<script src="public/js/loadMenu.js"></script>
 
   <main class="flex-grow container mx-auto px-4 py-10">
         <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 space-y-6 max-w-3xl mx-auto">
@@ -116,7 +113,12 @@
         </div>
     </main>
 
-    <div id="footer-placeholder" class="mt-auto"></div>
+<!-- 푸터 영역 -->
+<div id="footer-placeholder"></div>
+    
+<!-- JS 연결 -->
+<script src="public/js/loadMenu.js" defer></script>
+<script src="public/js/loadFooter.js" defer></script>
 
     <script>
         // 네비게이션 메뉴 토글
@@ -238,21 +240,6 @@
             copyFeedback.style.display = 'none';
             requiredFields.forEach(field => field.classList.remove('border-red-500'));
         });
-
-        // Footer 로드
-        fetch('footer.html')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Footer not found');
-                }
-                return response.text();
-            })
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            })
-            .catch(error => {
-                console.warn('Footer loading failed:', error);
-            });
     </script>
 
     <script>
