@@ -1,6 +1,11 @@
 const Parser = require('rss-parser');
 const parser = new Parser();
 
+function extractImageUrlFrom(html) {
+  const match = html.match(/<img[^>]+src=["']?([^>"']+)["']?/i);
+  return match ? match[1] : null;
+}
+
 exports.handler = async function (event) {
   const blogId = event.queryStringParameters.blogId;
   const feedUrl = `https://blog.rss.naver.com/${blogId}.xml`;
