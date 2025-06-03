@@ -16,19 +16,19 @@ exports.handler = async function (event) {
     const postCount = feed.items.length;
     const description = feed.description || "";
 
-    // 썸네일 추출 (본문 content가 없을 경우도 고려)
-    const contentHtml = feed.items[0]?.content || feed.items[0]?.contentSnippet || "";
-    const thumbnail = extractImageUrlFrom(contentHtml);
-
-    const recentPosts = feed.items.slice(0, 5).map(item => ({
-      title: item.title,
-      link: item.link,
-      pubDate: item.pubDate
-    }));
+    const recentPosts = feed.items.slice(0, 5).map(item => {
+      const contentHtml = item.content || item.contentSnippet || "";
+      return {
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate,
+        thumbnail: extractImageUrlFrom(contentHtml)
+      };
+    });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ blogName, postCount, description, recentPosts, thumbnail, }),
+      body: JSON.stringify({ blogName, postCount, description, recentPosts }),
     };
   } catch (error) {
     return {
