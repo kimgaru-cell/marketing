@@ -4,6 +4,7 @@ const parser = new Parser();
 exports.handler = async function (event) {
   const blogId = event.queryStringParameters.blogId;
   const feedUrl = `https://blog.rss.naver.com/${blogId}.xml`;
+  const thumbnail = extractImageUrlFrom(feed.items[0]?.content || '');
 
   try {
     const feed = await parser.parseURL(feedUrl);
@@ -18,7 +19,7 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ blogName, postCount, recentPosts }),
+      body: JSON.stringify({ blogName, postCount, description: feed.description, recentPosts, thumbnail, }),
     };
   } catch (error) {
     return {
