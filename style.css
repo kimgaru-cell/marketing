@@ -312,3 +312,20 @@ input[type="url"]:focus {
 .btn-action:active {
   transform: translateY(0px);
 }
+
+/* naver-blog-check.html 스타일 */
+.blog-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.blog-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+.recent-post-link {
+  color: #4f46e5;
+  text-decoration: none;
+}
+.recent-post-link:hover {
+  text-decoration: underline;
+  color: #3730a3;
+}
