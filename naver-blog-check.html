@@ -15,11 +15,8 @@
 </head>
 
 <body>
-<!-- 메뉴 삽입 위치 -->
+<!-- 헤더 영역 -->
 <div id="menu-container"></div>
-
-<!-- 메뉴 스크립트 -->
-<script src="public/js/loadMenu.js"></script>
 
 <form id="blogForm" class="flex flex-col md:flex-row items-center justify-center gap-2 p-4">
   <input type="text" id="blogId" placeholder="블로그 ID 입력" required
@@ -29,43 +26,39 @@
 </form>
     <div id="result" class="max-w-xl mx-auto px-4"></div>
 
-<script>
-document.getElementById('blogForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const blogId = document.getElementById('blogId').value;
-  const resultDiv = document.getElementById('result');
-
-  try {
-    const response = await fetch(`/.netlify/functions/fetchBlogRSS?blogId=${blogId}`);
-    const data = await response.json();
-
-    if (response.ok) {
-      resultDiv.innerHTML = `
-        <div class="bg-white shadow rounded p-4 mt-4">
-          <p><strong>블로그 이름:</strong> ${data.blogName}</p>
-          <p><strong>검색된 포스트 수:</strong> ${data.postCount}</p>
-          <p><strong>최근 글 제목:</strong> ${data.recentPostTitle}</p>
-        </div>
-      `;
-    } else {
-      resultDiv.innerHTML = `<p class="text-red-500 mt-4">😥 ${data.error}</p>`;
-    }
-  } catch (err) {
-    resultDiv.innerHTML = `<p class="text-red-500 mt-4">🥲 네트워크 오류 또는 API 실패</p>`;
-  }
-});
-</script>
-
-    <!-- main page -->
-    <div id="footer-placeholder"></div>
+<!-- 푸터 영역 -->
+<div id="footer-placeholder"></div>
     
+<!-- JS 연결 -->
+<script src="public/js/loadMenu.js" defer></script>
+<script src="public/js/loadFooter.js" defer></script>
+
     <script>
-      fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-placeholder').innerHTML = data;
+        document.getElementById('blogForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const blogId = document.getElementById('blogId').value;
+          const resultDiv = document.getElementById('result');
+        
+          try {
+            const response = await fetch(`/.netlify/functions/fetchBlogRSS?blogId=${blogId}`);
+            const data = await response.json();
+        
+            if (response.ok) {
+              resultDiv.innerHTML = `
+                <div class="bg-white shadow rounded p-4 mt-4">
+                  <p><strong>블로그 이름:</strong> ${data.blogName}</p>
+                  <p><strong>검색된 포스트 수:</strong> ${data.postCount}</p>
+                  <p><strong>최근 글 제목:</strong> ${data.recentPostTitle}</p>
+                </div>
+              `;
+            } else {
+              resultDiv.innerHTML = `<p class="text-red-500 mt-4">😥 ${data.error}</p>`;
+            }
+          } catch (err) {
+            resultDiv.innerHTML = `<p class="text-red-500 mt-4">🥲 네트워크 오류 또는 API 실패</p>`;
+          }
         });
     </script>
-  
+
 </body>
 </html>
