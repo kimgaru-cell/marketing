@@ -329,3 +329,9 @@ input[type="url"]:focus {
   text-decoration: underline;
   color: #3730a3;
 }
+.blog-card ul {
+  padding-left: 1rem;
+}
+.blog-card li {
+  line-height: 1.5;
+}
