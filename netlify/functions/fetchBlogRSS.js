@@ -26,8 +26,7 @@ exports.handler = async function (event) {
       return {
         title: item.title,
         link: item.link,
-        pubDate: item.pubDate,
-        thumbnail: extractImageUrlFrom(contentHtml)
+        pubDate: item.pubDate
       };
     });
 
