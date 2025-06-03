@@ -26,7 +26,7 @@
     
     <!-- Hero 섹션 -->
     <section class="bg-gradient-to-b from-indigo-100 to-pink-50 py-20 text-center">
-      <img src="/images/main_images.svg" alt="마케터 일러스트" class="mx-auto w-96 mb-8">
+      <img src="/images/main_images.svg" alt="마케터 일러스트" class="mx-auto w-96 mb-8" loading="lazy" />
       
       <h1 class="text-3xl md:text-5xl font-bold">
         <span class="text-indigo-600">마케터를 위한</span><br>
@@ -53,7 +53,7 @@
     <section class="my-12 px-4 max-w-5xl mx-auto bg-transparent shadow-none">
       <div class="mb-6 flex items-center justify-between">
         <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
-          <img src="https://img.icons8.com/color/48/news.png" class="w-6 h-6 mr-2"/> 마케팅 트렌드 뉴스
+          <img src="https://img.icons8.com/color/48/news.png" class="w-6 h-6 mr-2" loading="lazy" /> 마케팅 트렌드 뉴스
         </h2>
         <button id="refreshMarketingNews" class="text-sm px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition">🔄 새로고침</button>
       </div>
@@ -120,7 +120,7 @@
                     
                         return `
                           <div class="news-card snap-item flex bg-white rounded-lg shadow p-4 mb-4 hover:shadow-lg transition">
-                            ${imageUrl ? `<img src="${imageUrl}" alt="썸네일" class="w-20 h-20 object-cover rounded mr-4">` : ''}
+                            ${imageUrl ? `<img src="${imageUrl}" alt="썸네일" class="w-20 h-20 object-cover rounded mr-4" loading="lazy" />` : ''}
                             <div class="flex-1">
                               <div class="flex justify-between text-sm text-gray-500 mb-1">
                                 <span class="news-source font-medium text-indigo-600">${publisher}</span>
