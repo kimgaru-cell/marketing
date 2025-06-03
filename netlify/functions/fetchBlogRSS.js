@@ -10,10 +10,11 @@ exports.handler = async function (event) {
     const blogName = feed.title || "블로그 이름 없음";
     const postCount = feed.items.length;
     const recentPostTitle = feed.items[0]?.title || "최근 글 없음";
+    const recentPostLink = feed.items[0]?.link || "#";
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ blogName, postCount, recentPostTitle }),
+      body: JSON.stringify({ blogName, postCount, recentPostTitle, recentPostLink }),
     };
   } catch (error) {
     return {
