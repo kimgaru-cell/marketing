@@ -32,11 +32,8 @@
 </head>
 
 <body>
-<!-- 메뉴 삽입 위치 -->
+<!-- 헤더 영역 -->
 <div id="menu-container"></div>
-
-<!-- 메뉴 스크립트 -->
-<script src="public/js/loadMenu.js"></script>
 
   <main class="flex-grow container mx-auto px-4 py-10 max-w-xl">
     <div class="mb-8 text-center">
@@ -76,16 +73,12 @@
     </div>
   </main>
 
-  <!-- main page -->
-    <div id="footer-placeholder"></div>
+<!-- 푸터 영역 -->
+<div id="footer-placeholder"></div>
     
-    <script>
-      fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-placeholder').innerHTML = data;
-        });
-    </script>
+<!-- JS 연결 -->
+<script src="public/js/loadMenu.js"></script>
+<script src="public/js/loadFooter.js" defer></script>
   
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
