@@ -36,7 +36,7 @@ document.getElementById('blogForm').addEventListener('submit', async (e) => {
   const resultDiv = document.getElementById('result');
 
   try {
-    const response = await fetch(`/.netlify/functions/fetchBlogInfo?blogId=${blogId}`);
+    const response = await fetch(`/.netlify/functions/fetchBlogRSS?blogId=${blogId}`);
     const data = await response.json();
 
     if (response.ok) {
