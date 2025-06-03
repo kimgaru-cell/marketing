@@ -45,10 +45,15 @@
         
             if (response.ok) {
               resultDiv.innerHTML = `
-                <div class="bg-white shadow rounded p-4 mt-4">
-                  <p><strong>블로그 이름:</strong> ${data.blogName}</p>
-                  <p><strong>검색된 포스트 수:</strong> ${data.postCount}</p>
-                  <p><strong>최근 글 제목:</strong> ${data.recentPostTitle}</p>
+                <div class="blog-card bg-white shadow-md rounded-lg p-6 mt-6 border border-gray-200 transition hover:shadow-lg">
+                  <h2 class="text-xl font-bold text-gray-800 mb-2">📘 ${data.blogName}</h2>
+                  <p class="text-gray-600 mb-1">총 <span class="font-semibold">${data.postCount}</span>개의 글이 검색되었습니다.</p>
+                  <p class="text-gray-700">
+                    최근 글:
+                    <a href="${data.recentPostLink}" target="_blank" class="recent-post-link text-indigo-600 hover:underline font-medium">
+                      ${data.recentPostTitle}
+                    </a>
+                  </p>
                 </div>
               `;
             } else {
