@@ -91,7 +91,6 @@
             <div class="bg-white shadow-md rounded-lg p-6 mt-6 mb-20 border border-gray-200">
               <h2 class="text-xl font-bold text-gray-800 mb-2">📘 ${data.blogName}</h2>
               <p class="text-gray-600 mb-3 text-sm">총 <span class="font-semibold">${data.postCount}</span>개의 글이 검색되었습니다.</p>
-              <p class="text-gray-600 mb-3 text-sm">최근 5일 방문자 수: <span id="visitor-count" class="font-semibold">불러오는 중...</span></p>
               ${data.description ? `<p class="text-gray-500 mb-2 text-sm">${data.description}</p>` : ''}
               <h3 class="text-md font-semibold text-gray-700 mb-1">📝 최근 글 5개</h3>
               <ul class="list-disc pl-5">${postList}</ul>
@@ -99,20 +98,6 @@
               <div class="flex flex-wrap">${keywordHTML}</div>
             </div>
           `;
-
-          try {
-            const visitorRes = await fetch(`/.netlify/functions/fetchBlogVisitor?blogId=${blogId}`);
-            const visitorData = await visitorRes.json();
-            
-            if (visitorRes.ok) {
-              const totalCount = visitorData.visitors.reduce((sum, day) => sum + parseInt(day.count), 0);
-              document.getElementById("visitor-count").innerText = totalCount.toLocaleString() + "명";
-            } else {
-              document.getElementById("visitor-count").innerText = "불러오기 실패";
-            }
-          } catch (e) {
-            document.getElementById("visitor-count").innerText = "오류 발생";
-          }
         } else {
           resultDiv.innerHTML = `<p class="text-red-500 mt-4">😥 ${data.error}</p>`;
         }
