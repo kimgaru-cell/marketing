@@ -56,6 +56,11 @@
         .then(data => {
           console.log("📦 서버 응답 결과:", data);
 
+          if (!data || !Array.isArray(data.keywords)) {
+            alert("서버에서 유효한 데이터를 받지 못했습니다.");
+            return;
+          }
+
           const labels = data.keywords.map(k => k[0]);
           const counts = data.keywords.map(k => k[1]);
 
@@ -66,7 +71,10 @@
             return;
           }
 
-          const ctx = document.getElementById('keywordChart').getContext('2d');
+          const chartCanvas = document.getElementById('keywordChart');
+          const ctx = chartCanvas.getContext('2d');
+
+          // 기존 차트 제거
           if (window.keywordChart) window.keywordChart.destroy();
 
           window.keywordChart = new Chart(ctx, {
@@ -77,12 +85,18 @@
                 label: '등장 빈도',
                 data: counts,
                 backgroundColor: 'rgba(99, 102, 241, 0.6)',
-                borderRadius: 8
+                borderRadius: 6
               }]
             },
             options: {
+              responsive: true,
               scales: {
-                y: { beginAtZero: true }
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    precision: 0 // 소수점 제거
+                  }
+                }
               }
             }
           });
