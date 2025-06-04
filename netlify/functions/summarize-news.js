@@ -1,18 +1,17 @@
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 exports.handler = async function (event, context) {
   const body = JSON.parse(event.body);
   const { text } = body;
 
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
-
-  const prompt = `다음 뉴스 내용을 요약해 주세요 (3줄 이내) 그리고 핵심 키워드 5개를 추출해 주세요:\n\n${text}`;
+  const prompt = `다음 뉴스 내용을 3줄로 요약하고, 핵심 키워드 5개를 추출해줘:\n\n${text}`;
 
   try {
-    const gptResponse = await openai.createChatCompletion({
+    const chatCompletion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
     });
@@ -20,7 +19,7 @@ exports.handler = async function (event, context) {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        result: gptResponse.data.choices[0].message.content,
+        result: chatCompletion.choices[0].message.content,
       }),
     };
   } catch (error) {
