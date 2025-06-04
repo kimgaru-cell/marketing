@@ -103,9 +103,9 @@
           try {
             const visitorRes = await fetch(`/.netlify/functions/fetchBlogVisitor?blogId=${blogId}`);
             const visitorData = await visitorRes.json();
-          
+            
             if (visitorRes.ok) {
-              const totalCount = visitorData.reduce((sum, day) => sum + parseInt(day.count), 0);
+              const totalCount = visitorData.visitors.reduce((sum, day) => sum + parseInt(day.count), 0);
               document.getElementById("visitor-count").innerText = totalCount.toLocaleString() + "명";
             } else {
               document.getElementById("visitor-count").innerText = "불러오기 실패";
