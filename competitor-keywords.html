@@ -36,8 +36,19 @@
 <script src="public/js/loadFooter.js" defer></script>
 
   <script>
-    function analyzeKeywords() {
-      const brand = document.getElementById('brandInput').value;
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('brandInput');
+
+    // 키워드 입력 후 엔터로도 분석 가능
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        analyzeKeywords();
+      }
+    });
+
+    // 버튼도 클릭 가능
+    window.analyzeKeywords = function () {
+      const brand = input.value.trim();
       if (!brand) return alert("브랜드명을 입력해주세요!");
 
       fetch(`/.netlify/functions/getKeywords?keyword=${encodeURIComponent(brand)}`)
@@ -70,8 +81,9 @@
           console.error(err);
           alert("분석 중 오류가 발생했습니다.");
         });
-    }
-  </script>
+    };
+  });
+</script>
     
 </body>
 </html>
