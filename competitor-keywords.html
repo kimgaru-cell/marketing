@@ -35,42 +35,40 @@
 <script src="public/js/loadMenu.js" defer></script>
 <script src="public/js/loadFooter.js" defer></script>
 
-  <script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('brandInput');
 
-    // 키워드 입력 후 엔터로도 분석 가능
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         analyzeKeywords();
       }
     });
 
-    // 버튼도 클릭 가능
     window.analyzeKeywords = function () {
       const brand = input.value.trim();
       if (!brand) return alert("브랜드명을 입력해주세요!");
-    
+
       console.log("✅ 분석 시작: ", brand);
-    
+
       fetch(`/.netlify/functions/getKeywords?keyword=${encodeURIComponent(brand)}`)
         .then(res => res.json())
         .then(data => {
-          console.log("📦 서버 응답 결과:", data); // 이 라인 추가
-    
+          console.log("📦 서버 응답 결과:", data);
+
           const labels = data.keywords.map(k => k[0]);
           const counts = data.keywords.map(k => k[1]);
-    
-          console.log("🧪 키워드 목록:", labels); // 이 라인 추가
-    
+
+          console.log("🧪 키워드 목록:", labels);
+
           if (!labels.length) {
             alert("분석된 키워드가 없습니다.");
             return;
           }
-    
+
           const ctx = document.getElementById('keywordChart').getContext('2d');
           if (window.keywordChart) window.keywordChart.destroy();
-    
+
           window.keywordChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -94,6 +92,7 @@
           alert("분석 중 오류가 발생했습니다.");
         });
     };
+  });
 </script>
     
 </body>
