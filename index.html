@@ -132,6 +132,8 @@
                                   ${title}
                                 </a>
                               </h3>
+                              <button class="summarize-btn bg-indigo-200 hover:bg-indigo-300 text-sm px-3 py-1 rounded mt-2">요약 보기</button>
+                              <div class="summary-box text-sm mt-2 text-gray-100 hidden"></div>
                             </div>
                           </div>
                         `;
@@ -229,6 +231,31 @@
       // 초기 실행
       window.addEventListener("load", () => {
       });
+    </script>
+
+    <script>
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('summarize-btn')) {
+        const card = e.target.closest('.news-card');
+        const summaryBox = card.querySelector('.summary-box');
+        const newsText = card.querySelector('h3').innerText;
+    
+        summaryBox.innerText = "요약 중...";
+        summaryBox.classList.remove("hidden");
+    
+        fetch("/.netlify/functions/summarize-news", {
+          method: "POST",
+          body: JSON.stringify({ text: newsText }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            summaryBox.innerText = data.result || "요약 실패 😥";
+          })
+          .catch(() => {
+            summaryBox.innerText = "요약 중 오류 발생 😥";
+          });
+      }
+    });
     </script>
     
 </body>
