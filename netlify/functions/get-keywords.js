@@ -4,7 +4,14 @@ exports.handler = async (event) => {
   const { placeUrl } = JSON.parse(event.body);
 
   try {
-    const response = await fetch(placeUrl);
+    const response = await fetch(placeUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+        'Accept-Language': 'ko-KR,ko;q=0.9',
+        'Accept': 'text/html',
+      }
+    });
+
     const html = await response.text();
 
     const keywordMatch = html.match(/keywordlist\s*:\s*\[([^\]]+)\]/i);
