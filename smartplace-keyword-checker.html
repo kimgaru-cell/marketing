@@ -47,9 +47,12 @@
 
     const match = url.match(/place\/(\d{7,})/);
 
-    if (url.includes('map.naver.com') && match) {
-      const placeId = match[1];
-      url = `https://pcmap.place.naver.com/restaurant/${placeId}/home`;
+    if (url.includes('map.naver.com')) {
+      const match = url.match(/place\/(\d+)/);
+      if (match) {
+        const placeId = match[1];
+        url = `https://pcmap.place.naver.com/restaurant/${placeId}/home`;
+      }
     }
 
     document.getElementById('result').innerText = '분석 중입니다...';
