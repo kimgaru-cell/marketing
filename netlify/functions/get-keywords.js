@@ -3,21 +3,35 @@ const fetch = require('node-fetch');
 exports.handler = async (event) => {
   const { placeUrl } = JSON.parse(event.body);
 
+  // ❶ placeId 추출 (스마트플레이스 URL 또는 네이버 지도 URL 지원)
+  const match = placeUrl.match(/(?:place|restaurant)\/(\d{7,})/);
+  if (!match) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'placeId를 추출할 수 없습니다.' }),
+    };
+  }
+
+  const placeId = match[1];
+
+  // ❷ 내부 API 주소 구성
+  const apiUrl = `https://pcmap.place.naver.com/api/places/${placeId}/summary`;
+
   try {
-    const response = await fetch(placeUrl, {
+    // ❸ API 요청 (브라우저인 척 User-Agent 추가)
+    const response = await fetch(apiUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-        'Accept-Language': 'ko-KR,ko;q=0.9',
-        'Accept': 'text/html',
-      }
+        'User-Agent': 'Mozilla/5.0',
+        'Accept': 'application/json',
+      },
     });
 
-    const html = await response.text();
+    const json = await response.json();
 
-    const keywordMatch = html.match(/keywordlist\s*:\s*\[([^\]]+)\]/i);
+    // ❹ keywordList 파싱
+    const keywords = json.keywordList?.map(k => k.name) || [];
 
-    if (keywordMatch) {
-      const keywords = keywordMatch[1].split(',').map(k => k.trim().replace(/['"]/g, ''));
+    if (keywords.length > 0) {
       return {
         statusCode: 200,
         body: JSON.stringify({ keywords }),
@@ -25,9 +39,10 @@ exports.handler = async (event) => {
     } else {
       return {
         statusCode: 404,
-        body: JSON.stringify({ error: '키워드 정보를 찾을 수 없습니다.' }),
+        body: JSON.stringify({ error: '키워드를 찾을 수 없습니다.' }),
       };
     }
+
   } catch (err) {
     return {
       statusCode: 500,
