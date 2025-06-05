@@ -1,6 +1,22 @@
 const fetch = require('node-fetch');
 
 export default async function handler(req, res) {
+  // 모든 도메인에서 요청 허용 (배포 후 필요하면 도메인 제한 가능)
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // 허용할 HTTP 메서드 설정
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  // 허용할 요청 헤더 설정
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // OPTIONS 메서드에 대해 미리 응답 (CORS preflight 대응)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'POST 요청만 허용됩니다.' });
+  }
+
   const { placeUrl } = req.body;
 
   const match = placeUrl.match(/(?:place|restaurant)\/(\d{7,})/);
