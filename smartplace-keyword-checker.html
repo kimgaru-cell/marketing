@@ -60,10 +60,10 @@
       });
     
       const data = await response.json();
-      if (data.keywords) {
+      if (data.keywords && data.keywords.length > 0) {
         document.getElementById('result').innerText = '대표 키워드: ' + data.keywords.join(', ');
       } else {
-        document.getElementById('result').innerText = '키워드를 찾을 수 없습니다.';
+        document.getElementById('result').innerText = data.error || '해당 장소에 키워드가 없습니다.';
       }
     });
  </script>
