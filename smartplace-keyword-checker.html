@@ -46,7 +46,8 @@
       }
     
       const match = url.match(/place\/(\d{7,})/);
-      if (match) {
+    
+      if (url.includes('map.naver.com') && match) {
         const placeId = match[1];
         url = `https://pcmap.place.naver.com/restaurant/${placeId}/home`;
       }
