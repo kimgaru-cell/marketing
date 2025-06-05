@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   const { placeUrl } = req.body;
 
-  const match = placeUrl.match(/(?:place|restaurant)\/(\d{7,})/);
+  const match = placeUrl.match(/(?:place|restaurant)\/(\d+)/);
   if (!match) {
     return res.status(400).json({ error: 'placeId를 추출할 수 없습니다.' });
   }
