@@ -37,29 +37,35 @@
 
  <script>
   document.getElementById('analyze-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    let url = document.getElementById('place-url').value.trim();
-
-    // place ID 추출 (예: place/1136987923)
-    const match = url.match(/place\/(\d{7,})/);
-    if (match) {
-      const placeId = match[1];
-      url = `https://pcmap.place.naver.com/restaurant/${placeId}/home`;
-    }
-
-    const response = await fetch('/.netlify/functions/get-keywords', {
-      method: 'POST',
-      body: JSON.stringify({ placeUrl: url }),
+      e.preventDefault();
+      let url = document.getElementById('place-url').value.trim();
+    
+      if (!url.includes('naver.com')) {
+        document.getElementById('result').innerText = '유효한 네이버 지도 또는 스마트플레이스 URL을 입력해주세요.';
+        return;
+      }
+    
+      const match = url.match(/place\/(\d{7,})/);
+      if (match) {
+        const placeId = match[1];
+        url = `https://pcmap.place.naver.com/restaurant/${placeId}/home`;
+      }
+    
+      document.getElementById('result').innerText = '분석 중입니다...';
+    
+      const response = await fetch('/.netlify/functions/get-keywords', {
+        method: 'POST',
+        body: JSON.stringify({ placeUrl: url }),
+      });
+    
+      const data = await response.json();
+      if (data.keywords) {
+        document.getElementById('result').innerText = '대표 키워드: ' + data.keywords.join(', ');
+      } else {
+        document.getElementById('result').innerText = '키워드를 찾을 수 없습니다.';
+      }
     });
-
-    const data = await response.json();
-    if (data.keywords) {
-      document.getElementById('result').innerText = '대표 키워드: ' + data.keywords.join(', ');
-    } else {
-      document.getElementById('result').innerText = '키워드를 찾을 수 없습니다.';
-    }
-  });
-</script>
+ </script>
 
 
 </body>
