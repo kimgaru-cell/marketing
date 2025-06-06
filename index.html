@@ -286,6 +286,41 @@
       }
     });
     </script>
+
+    <script>
+      async function loadDynamicBanners() {
+        const bannerContainer = document.getElementById('dynamicBanner');
+        try {
+          const res = await fetch('/.netlify/functions/getBanners');
+          const banners = await res.json();
+    
+          // 등록된 배너가 없으면 숨김 처리
+          if (!banners.length) {
+            bannerContainer.style.display = 'none';
+            return;
+          }
+    
+          // 가장 첫 번째 배너만 보여주기 (원하면 여러 개도 가능)
+          const banner = banners[0];
+    
+          bannerContainer.innerHTML = `
+            <div class="bg-yellow-50 border border-yellow-300 rounded-lg shadow p-4 flex items-center justify-between hover:shadow-md transition">
+              <div>
+                <p class="text-lg font-bold text-yellow-800">${banner.title}</p>
+                <p class="text-sm text-yellow-700">${banner.description}</p>
+              </div>
+              <a href="${banner.link}" target="_blank" class="ml-4 text-sm bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
+                자세히 보기
+              </a>
+            </div>
+          `;
+        } catch (err) {
+          console.error('배너 로딩 실패:', err);
+        }
+      }
+    
+      document.addEventListener('DOMContentLoaded', loadDynamicBanners);
+    </script>
     
 </body>
 </html>
