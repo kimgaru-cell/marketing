@@ -67,14 +67,23 @@
         image_url: document.getElementById('image_url').value,
         active: document.getElementById('active').checked,
       };
-
-      const { error } = await supabase.from('banners').insert([newBanner]);
-      if (!error) {
-        alert('✅ 등록 완료!');
-        loadBanners();
-        e.target.reset();
+    
+      const res = await fetch('/.netlify/functions/addBanner', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBanner),
+      });
+    
+      const result = await res.json();
+    
+      if (res.ok) {
+        alert('✅ 배너 등록 완료!');
+        loadBanners(); // 목록 갱신
+        e.target.reset(); // 폼 초기화
       } else {
-        alert('❌ 등록 실패');
+        alert('❌ 등록 실패: ' + result.error);
       }
     });
 
