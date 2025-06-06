@@ -26,7 +26,7 @@ exports.handler = async (event) => {
     title: data.title,
     description: data.description,
     link: data.link,
-    image_url: data.image_url || null,
+    image_url: data.image_url || '',
     active: !!data.active,
   }]);
 
