@@ -26,29 +26,36 @@
   </div>
 
   <script>
-    // 🧩 여기 API 정보 입력
-    const supabase = supabase.createClient(
-      'https://azdnwqrirgpedwcuaqdi.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'
-
     async function loadBanners() {
-      const { data, error } = await supabase.from('banners').select('*').order('created_at', { ascending: false });
       const list = document.getElementById('bannerList');
-      list.innerHTML = '';
-
-      if (error) return list.innerHTML = `<li>❌ 로드 실패</li>`;
-
-      data.forEach(banner => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div class="p-4 border rounded bg-gray-100">
-            <p class="font-bold text-gray-800">${banner.title}</p>
-            <p class="text-sm text-gray-600">${banner.description}</p>
-            <a href="${banner.link}" class="text-indigo-600 underline text-sm" target="_blank">바로가기</a>
-            <p class="text-xs text-gray-500 mt-1">${banner.active ? '✅ 활성화됨' : '⛔ 비활성화'}</p>
-          </div>`;
-        list.appendChild(li);
-      });
+      list.innerHTML = '<li class="text-gray-500">불러오는 중...</li>';
+    
+      try {
+        const res = await fetch('/.netlify/functions/getBanners');
+        const data = await res.json();
+    
+        list.innerHTML = ''; // 초기화
+    
+        data.forEach(banner => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div class="p-4 border rounded bg-gray-100">
+              <p class="font-bold text-gray-800">${banner.title}</p>
+              <p class="text-sm text-gray-600">${banner.description}</p>
+              <a href="${banner.link}" class="text-indigo-600 underline text-sm" target="_blank">바로가기</a>
+              <p class="text-xs text-gray-500 mt-1">${banner.active ? '✅ 활성화됨' : '⛔ 비활성화'}</p>
+            </div>`;
+          list.appendChild(li);
+        });
+    
+        if (data.length === 0) {
+          list.innerHTML = `<li class="text-gray-400">등록된 배너가 없습니다.</li>`;
+        }
+    
+      } catch (err) {
+        list.innerHTML = `<li class="text-red-500">❌ 배너 불러오기 실패</li>`;
+        console.error(err);
+      }
     }
 
     document.getElementById('bannerForm').addEventListener('submit', async (e) => {
