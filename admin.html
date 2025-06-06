@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>배너 관리 - Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 p-8">
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">📢 배너 관리 어드민</h1>
+    
+    <form id="bannerForm" class="space-y-4 mb-6">
+      <input type="text" id="title" placeholder="배너 제목" class="w-full border p-2 rounded" required />
+      <input type="text" id="description" placeholder="설명" class="w-full border p-2 rounded" required />
+      <input type="url" id="link" placeholder="클릭 시 이동할 링크" class="w-full border p-2 rounded" required />
+      <input type="url" id="image_url" placeholder="(선택) 이미지 URL" class="w-full border p-2 rounded" />
+      <label class="inline-flex items-center">
+        <input type="checkbox" id="active" class="mr-2"> 활성화
+      </label>
+      <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">배너 등록</button>
+    </form>
+
+    <h2 class="text-xl font-semibold mb-2">📋 등록된 배너 목록</h2>
+    <ul id="bannerList" class="space-y-3"></ul>
+  </div>
+
+  <script>
+    // 🧩 여기 API 정보 입력
+    const supabase = supabase.createClient(
+      'https://azdnwqrirgpedwcuaqdi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZG53cXJpcmdwZWR3Y3VhcWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MDU4NTIsImV4cCI6MjA2MzM4MTg1Mn0.wpsdKaG0XWwWRXrXVHzwliZ99EYjvHpAizqQbu5djn8'
+
+    async function loadBanners() {
+      const { data, error } = await supabase.from('banners').select('*').order('created_at', { ascending: false });
+      const list = document.getElementById('bannerList');
+      list.innerHTML = '';
+
+      if (error) return list.innerHTML = `<li>❌ 로드 실패</li>`;
+
+      data.forEach(banner => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="p-4 border rounded bg-gray-100">
+            <p class="font-bold text-gray-800">${banner.title}</p>
+            <p class="text-sm text-gray-600">${banner.description}</p>
+            <a href="${banner.link}" class="text-indigo-600 underline text-sm" target="_blank">바로가기</a>
+            <p class="text-xs text-gray-500 mt-1">${banner.active ? '✅ 활성화됨' : '⛔ 비활성화'}</p>
+          </div>`;
+        list.appendChild(li);
+      });
+    }
+
+    document.getElementById('bannerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newBanner = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        link: document.getElementById('link').value,
+        image_url: document.getElementById('image_url').value,
+        active: document.getElementById('active').checked,
+      };
+
+      const { error } = await supabase.from('banners').insert([newBanner]);
+      if (!error) {
+        alert('✅ 등록 완료!');
+        loadBanners();
+        e.target.reset();
+      } else {
+        alert('❌ 등록 실패');
+      }
+    });
+
+    loadBanners();
+  </script>
+</body>
+</html>
