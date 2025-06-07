@@ -9,7 +9,6 @@ exports.handler = async () => {
   const { data, error } = await supabase
     .from('banners')
     .select('*')
-    .in('active', [true, 'TRUE'])
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -19,8 +18,26 @@ exports.handler = async () => {
     };
   }
 
+  // ✅ 현재 시간
+  const now = new Date().toISOString();
+
+  // ✅ 필터링 조건: active + 공개 기간 (start~end)
+  const filtered = data.filter((banner) => {
+    const active =
+      banner.active === true ||
+      banner.active === 'TRUE' ||
+      banner.active === 'true' ||
+      banner.active === 1 ||
+      banner.active === '1';
+
+    const startOk = !banner.start_date || banner.start_date <= now;
+    const endOk = !banner.end_date || banner.end_date >= now;
+
+    return active && startOk && endOk;
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(data),
+    body: JSON.stringify(filtered),
   };
 };
