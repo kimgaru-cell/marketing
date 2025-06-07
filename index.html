@@ -301,15 +301,23 @@
     
           const banner = banners[0];
     
-          // 텍스트 배너만 있는 구조
+          const hasImage = banner.image_url && banner.image_url.trim() !== '';
+    
           const html = `
-            <div class="bg-yellow-50 border border-yellow-300 rounded-lg shadow p-6 flex flex-col md:flex-row items-center justify-between gap-4 hover:shadow-md transition">
+            <div class="bg-yellow-50 border border-yellow-300 rounded-lg shadow p-6 flex ${
+              hasImage ? 'flex-col md:flex-row' : 'flex-col'
+            } items-start md:items-center justify-between gap-4 hover:shadow-md transition">
+              ${
+                hasImage
+                  ? `<img src="${banner.image_url}" alt="배너 이미지" class="w-24 h-24 object-cover rounded-md" loading="lazy" />`
+                  : ''
+              }
               <div class="flex-1">
                 <p class="text-lg font-bold text-yellow-800">${banner.title}</p>
                 <p class="text-sm text-yellow-700 mt-1">${banner.description}</p>
               </div>
               <a href="${banner.link}" target="_blank"
-                class="text-sm bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition whitespace-nowrap">
+                class="text-sm bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition whitespace-nowrap self-start md:self-auto">
                 자세히 보기
               </a>
             </div>
