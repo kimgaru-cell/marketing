@@ -9,7 +9,7 @@ exports.handler = async () => {
   const { data, error } = await supabase
     .from('banners')
     .select('*')
-    .eq('active', true)
+    .in('active', [true, 'TRUE'])
     .order('created_at', { ascending: false });
 
   if (error) {
