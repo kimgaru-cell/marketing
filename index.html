@@ -27,16 +27,15 @@
 <!-- 헤더 영역 -->
 <div id="menu-container"></div>
 
-    <!-- 배너 슬라이드 영역 -->
-    <div class="max-w-5xl mx-auto px-4 py-8 mt-8">
-      <div class="swiper bannerSwiper">
-        <div class="swiper-wrapper" id="bannerSlides">
-          <!-- JS가 배너를 여기에 채워넣음 -->
-        </div>
-        <!-- 슬라이드 컨트롤 -->
-        <div class="swiper-pagination"></div>
-      </div>
+  <!-- 배너 영역 -->
+  <section class="max-w-6xl mx-auto px-4 mt-10">
+    <div class="swiper bannerSwiper rounded-xl overflow-hidden shadow-lg">
+      <div class="swiper-wrapper" id="bannerSlides"></div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
     </div>
+  </section>
 
     <!-- Hero 섹션 -->
     <section class="bg-gradient-to-b from-indigo-100 to-pink-50 py-20 text-center">
@@ -63,41 +62,40 @@
       </a>
     </section>
 
-    <section class="bg-white py-16 px-4">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold text-gray-800 mb-8">🛠 지금 바로 써볼 수 있는 도구</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 카드 1 -->
-          <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-6 shadow hover:shadow-md transition">
+    <!-- 도구 리스트 -->
+    <section class="py-16 px-4 bg-white">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-10 text-center">🛠 실전 마케팅 도구</h2>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-6 shadow-md hover:shadow-lg">
             <h3 class="text-xl font-semibold text-indigo-700">🔗 URL 단축기</h3>
-            <p class="text-gray-600 mt-2">단축된 URL를 쉽고 빠르게 만들 수 있어요!</p>
-            <a href="/url-cut" class="inline-block mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition">
-              도구 사용하기 →
-            </a>
+            <p class="text-gray-600 mt-2">단축된 URL을 쉽고 빠르게 만들 수 있어요!</p>
+            <a href="/url-cut" class="inline-block mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">도구 사용하기 →</a>
           </div>
-          
-          <!-- 카드 2 -->
-          <div class="bg-pink-50 border border-pink-200 rounded-xl p-6 shadow hover:shadow-md transition">
+          <div class="bg-pink-50 border border-pink-200 rounded-xl p-6 shadow-md hover:shadow-lg">
             <h3 class="text-xl font-semibold text-pink-700">🔧 UTM 코드 생성기</h3>
-            <p class="text-gray-600 mt-2">GA 트래킹용 코드를 누구나 손쉽게 제작할 수 있어요.</p>
-            <a href="/utm-builder" class="inline-block mt-4 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition">
-              도구 사용하기 →
-            </a>
+            <p class="text-gray-600 mt-2">GA 분석용 캠페인 파라미터를 손쉽게 생성할 수 있어요.</p>
+            <a href="/utm-builder" class="inline-block mt-4 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600">도구 사용하기 →</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="my-12 px-4 max-w-5xl mx-auto bg-transparent shadow-none">
-      <div class="mb-6 flex items-center justify-between">
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
-          <img src="https://img.icons8.com/color/48/news.png" class="w-6 h-6 mr-2" loading="lazy" /> 마케팅 트렌드 뉴스
-        </h2>
-        <button id="refreshMarketingNews" class="text-sm px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition">🔄 새로고침</button>
-      </div>
-      <div id="marketingNews" class="scroll-list-wrp">
-        <div class="loading text-gray-300 text-center">마케팅 관련 뉴스를 불러오는 중...</div>
+    <!-- 뉴스 영역 -->
+    <section class="py-16 px-4 bg-gray-100">
+      <div class="max-w-6xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+          <h2 class="text-2xl md:text-3xl font-bold flex items-center">
+            <img src="https://img.icons8.com/color/48/news.png" class="w-6 h-6 mr-2" /> 마케팅 트렌드 뉴스
+          </h2>
+          <button id="refreshMarketingNews" class="text-sm px-4 py-2 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 transition">🔄 새로고침</button>
+        </div>
+        <div id="marketingNews" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div class="w-full flex justify-center items-center flex-col py-10 col-span-full">
+            <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+            <p class="text-gray-500 text-sm text-center">마케팅 뉴스를 불러오는 중입니다...</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -122,179 +120,86 @@
     </script>
 
     <script>
-        // 네이버 뉴스 API를 사용하는 대신 CORS 우회를 위한 프록시 서버 사용
-        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
-
-        // 마케팅 관련 뉴스 불러오기 (네이버 뉴스 검색 RSS)
-        function fetchMarketingNews() {
-          const marketingNewsContainer = document.getElementById('marketingNews');
-          marketingNewsContainer.innerHTML = `
-              <div class="w-full flex justify-center items-center flex-col py-10">
-                <div class="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                <p class="text-gray-500 text-sm text-center">마케팅 뉴스를 불러오는 중입니다...</p>
-              </div>
-            `;
-        
-          fetch('/.netlify/functions/getNaverNews?query=마케팅')  // ✅ 여기서 '마케팅' 검색어 사용
-            .then(response => response.json())
-            .then(data => {
-              let html = '';
-              const fetchPromises = []; // 추가: 언론사 정보 가져오기 위한 프로미스 배열
-        
-              if (data.items && data.items.length > 0) {
-                data.items.forEach(item => {
-                  const title = item.title.replace(/<[^>]+>/g, '');
-                  const link = item.link;
-                  const date = new Date(item.pubDate).toLocaleDateString();
-                  const originallink = item.originallink || item.link; // 추가: 원본 링크 가져오기
-                  const domain = new URL(item.originallink || item.link).hostname;
-        
-                  const publisherPromise = fetch('/.netlify/functions/getPublisher?url=' + encodeURIComponent(originallink))
-                      .then(res => res.json())
-                      .then(publisherData => {
-                        const publisher = publisherData.publisher || '';
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(item.description, 'text/html');
-                        const img = doc.querySelector('img');
-                        const imageUrl = img ? img.src : null;
-                    
-                        return `
-                          <div class="news-card snap-item flex bg-white rounded-lg shadow p-4 mb-4 hover:shadow-lg transition">
-                            ${imageUrl ? `<img src="${imageUrl}" alt="썸네일" class="w-20 h-20 object-cover rounded mr-4" loading="lazy" />` : ''}
-                            <div class="flex-1">
-                              <div class="flex justify-between text-sm text-gray-500 mb-1">
-                                <span class="news-source font-medium text-indigo-600">${publisher}</span>
-                                <span class="news-date">${date}</span>
-                              </div>
-                              <h3 class="text-md font-semibold text-gray-800 leading-snug line-clamp-2">
-                                <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
-                                  ${title}
-                                </a>
-                              </h3>
-                              <button class="summarize-btn bg-indigo-200 hover:bg-indigo-300 text-sm px-3 py-1 rounded mt-2">요약 보기</button>
-                              <div class="summary-box text-sm mt-2 text-gray-100 hidden"></div>
-                            </div>
-                          </div>
-                        `;
-                      })
-                      .catch(error => {
-                        console.error('언론사 정보 로딩 실패:', error);
-                        return `
-                          <div class="news-card snap-item flex bg-white rounded-lg shadow p-4 mb-4 hover:shadow-lg transition">
-                            <div class="flex-1">
-                              <div class="flex justify-between text-sm text-gray-500 mb-1">
-                                <span class="news-source font-medium text-indigo-600">${domain}</span>
-                                <span class="news-date">${date}</span>
-                              </div>
-                              <h3 class="text-md font-semibold text-gray-800 leading-snug line-clamp-2">
-                                <a href="${link}" target="_blank" class="hover:text-indigo-700 transition">
-                                  ${title}
-                                </a>
-                              </h3>
-                            </div>
-                          </div>
-                        `;
-                      });
-        
-                  fetchPromises.push(publisherPromise);
-                });
-        
-                Promise.all(fetchPromises)
-                  .then(newsItemsHTML => {
-                    html = newsItemsHTML.join(''); // Combine all HTML snippets into one string
-                    marketingNewsContainer.innerHTML = html; // Update the container once
-                    highlightNearestCard();
-                  });
-                  
-              } else {
-                html = '<p>관련 뉴스를 찾을 수 없습니다.</p>';
-                marketingNewsContainer.innerHTML = html;
-              }
-            })
-            .catch(error => {
-              console.error('마케팅 뉴스 로딩 실패:', error);
-              marketingNewsContainer.innerHTML = `
-                <div class="text-center text-gray-500">
-                  🥲 마케팅 뉴스를 불러오지 못했어요.<br>
-                  잠시 후 다시 시도해주세요.
+      async function fetchMarketingNews() {
+        const container = document.getElementById("marketingNews");
+        container.innerHTML = `<div class='w-full flex justify-center items-center flex-col py-10 col-span-full'>
+          <div class='w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-2'></div>
+          <p class='text-gray-500 text-sm text-center'>마케팅 뉴스를 불러오는 중입니다...</p>
+        </div>`;
+    
+        try {
+          const res = await fetch('/.netlify/functions/getNaverNews?query=마케팅');
+          const data = await res.json();
+          let html = "";
+    
+          const newsItems = await Promise.all(
+            data.items.map(async (item) => {
+              const title = item.title.replace(/<[^>]+>/g, '');
+              const link = item.link;
+              const date = new Date(item.pubDate).toLocaleDateString();
+              const originallink = item.originallink || item.link;
+              const domain = new URL(originallink).hostname;
+              const publisherRes = await fetch('/.netlify/functions/getPublisher?url=' + encodeURIComponent(originallink));
+              const publisherData = await publisherRes.json();
+              const publisher = publisherData.publisher || domain;
+    
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(item.description, 'text/html');
+              const img = doc.querySelector('img');
+              const imageUrl = img ? img.src : null;
+    
+              return `
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition flex flex-col">
+                  ${imageUrl ? `<img src="${imageUrl}" class="w-full h-40 object-cover rounded-md mb-4" loading="lazy" />` : ''}
+                  <div class="flex-1 flex flex-col justify-between">
+                    <div class="mb-2">
+                      <div class="text-xs text-gray-400 flex justify-between">
+                        <span>${publisher}</span><span>${date}</span>
+                      </div>
+                      <h3 class="text-md font-semibold text-gray-800 mt-1">
+                        <a href="${link}" target="_blank" class="hover:text-indigo-600 transition">${title}</a>
+                      </h3>
+                    </div>
+                    <button class="summarize-btn bg-indigo-100 hover:bg-indigo-200 text-sm text-indigo-700 px-3 py-1 rounded mt-2 self-start">요약 보기</button>
+                    <div class="summary-box text-sm text-gray-600 mt-2 hidden"></div>
+                  </div>
                 </div>`;
-            });
-            }
-        
-        // 페이지 로드 시 뉴스 로딩 시도
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                fetchMarketingNews();
-            } catch (error) {
-                console.error('Error loading news:', error);
-                loadSampleNews();
-            }
-            
-            // 새로고침 버튼에 이벤트 리스너 추가
-            document.getElementById('refreshMarketingNews').addEventListener('click', fetchMarketingNews);
-        });
-    </script>
-
-    <script>
-      const container = document.getElementById("marketingNews");
+            })
+          );
     
-      function highlightNearestCard() {
-        const cards = container.querySelectorAll(".news-card");
-        const containerRect = container.getBoundingClientRect();
-        const centerY = containerRect.top + containerRect.height / 2;
-    
-        let closestCard = null;
-        let closestDistance = Infinity;
-    
-        cards.forEach((card) => {
-          const rect = card.getBoundingClientRect();
-          const cardCenter = rect.top + rect.height / 2;
-          const distance = Math.abs(centerY - cardCenter);
-    
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestCard = card;
-          }
-        });
-    
-        // 스타일 초기화 및 강조 적용
-        cards.forEach((card) => card.classList.remove("active"));
-        if (closestCard) closestCard.classList.add("active");
+          html = newsItems.join("");
+          container.innerHTML = html;
+        } catch (err) {
+          console.error("뉴스 로딩 실패:", err);
+          container.innerHTML = `<div class='col-span-full text-center text-gray-500'>🥲 마케팅 뉴스를 불러오지 못했어요.<br>잠시 후 다시 시도해주세요.</div>`;
+        }
       }
     
-      // 스크롤 시마다 실행
-      container.addEventListener("scroll", () => {
-        window.requestAnimationFrame(highlightNearestCard);
-      });
+      document.addEventListener("DOMContentLoaded", fetchMarketingNews);
+      document.getElementById("refreshMarketingNews").addEventListener("click", fetchMarketingNews);
     
-      // 초기 실행
-      window.addEventListener("load", () => {
-      });
-    </script>
-
-    <script>
-    document.addEventListener('click', function (e) {
-      if (e.target.classList.contains('summarize-btn')) {
-        const card = e.target.closest('.news-card');
-        const summaryBox = card.querySelector('.summary-box');
-        const newsText = card.querySelector('h3').innerText;
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("summarize-btn")) {
+          const card = e.target.closest(".bg-white");
+          const summaryBox = card.querySelector(".summary-box");
+          const newsText = card.querySelector("h3").innerText;
     
-        summaryBox.innerText = "요약 중...";
-        summaryBox.classList.remove("hidden");
+          summaryBox.innerText = "요약 중...";
+          summaryBox.classList.remove("hidden");
     
-        fetch("/.netlify/functions/summarize-news", {
-          method: "POST",
-          body: JSON.stringify({ text: newsText }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            summaryBox.innerText = data.result || "요약 기능이 일시적으로 제한되었습니다. 잠시 후 다시 시도해 주세요. 😥";
+          fetch("/.netlify/functions/summarize-news", {
+            method: "POST",
+            body: JSON.stringify({ text: newsText }),
           })
-          .catch(() => {
-            summaryBox.innerText = "요약 중 오류 발생 😥";
-          });
-      }
-    });
+            .then((res) => res.json())
+            .then((data) => {
+              summaryBox.innerText = data.result || "요약 기능이 일시적으로 제한되었습니다.";
+            })
+            .catch(() => {
+              summaryBox.innerText = "요약 중 오류 발생 😥";
+            });
+        }
+      });
     </script>
 
     <script>
