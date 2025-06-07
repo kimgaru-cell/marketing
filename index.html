@@ -65,7 +65,7 @@
     <!-- 도구 리스트 -->
     <section class="py-16 px-4 bg-white">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold mb-10 text-gray-900 text-center">🛠 <span class="text-emerald-600">실전 마케팅 도구</span></h2>
+        <h2 class="text-3xl font-bold mb-10 text-indigo-800 text-center">🛠 <span class="text-emerald-600">실전 마케팅 도구</span></h2>
         <div class="grid gap-6 md:grid-cols-2">
           <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-6 shadow-md hover:shadow-lg">
             <h3 class="text-xl font-semibold text-indigo-700">🔗 URL 단축기</h3>
@@ -148,18 +148,18 @@
               const imageUrl = img ? img.src : null;
     
               return `
-                <div class="swiper-slide flex h-auto">
-                  <div class="bg-white rounded-xl shadow p-5 hover:shadow-lg transition flex flex-col justify-between w-full">
+                <div class="swiper-slide flex h-full">
+                  <div class="bg-white rounded-xl shadow p-5 hover:shadow-lg transition flex flex-col justify-between w-full h-full min-h-[340px]">
                     ${imageUrl ? `<img src="${imageUrl}" class="w-full h-40 object-cover rounded-md mb-4" loading="lazy" />` : ''}
-                    <div class="mb-3 flex flex-col justify-between h-full">
-                      <div class="text-xs text-gray-500 flex justify-between">
+                    <div class="flex-1 flex flex-col justify-between">
+                      <div class="text-xs text-gray-500 flex justify-between mb-1">
                         <span>${publisher}</span><span>${date}</span>
                       </div>
-                      <h3 class="text-base font-semibold text-gray-800 mt-1">
+                      <h3 class="text-base font-semibold text-gray-800 mt-1 flex-1 leading-snug">
                         <a href="${link}" target="_blank" class="hover:text-indigo-600 transition">${title}</a>
                       </h3>
                     </div>
-                    <button class="summarize-btn bg-indigo-100 hover:bg-indigo-200 text-sm text-indigo-800 px-3 py-1 rounded self-start mt-3">요약 보기</button>
+                    <button class="summarize-btn bg-indigo-100 hover:bg-indigo-200 text-sm text-indigo-800 px-3 py-1 rounded mt-3 self-start">요약 보기</button>
                     <div class="summary-box text-sm text-gray-700 mt-2 hidden"></div>
                   </div>
                 </div>`;
