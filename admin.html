@@ -28,6 +28,22 @@
   </div>
 
   <script>
+    function toKST(dateStr) {
+      const utcDate = new Date(dateStr);
+      return new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // KST (UTC+9)
+    }
+
+     function getStatus(banner) {
+      const now = new Date();
+      const start = banner.start_date ? toKST(banner.start_date) : null;
+      const end = banner.end_date ? toKST(banner.end_date) : null;
+  
+      if (!banner.active) return '⛔ 비활성화';
+      if (start && now < start) return '⏳ 예정';
+      if (end && now > end) return '🕘 만료';
+      return '✅ 노출 중';
+    }
+    
     async function loadBanners() {
       const list = document.getElementById('bannerList');
       list.innerHTML = '<li class="text-gray-500">불러오는 중...</li>';
@@ -45,7 +61,7 @@
               <p class="font-bold text-gray-800">${banner.title}</p>
               <p class="text-sm text-gray-600">${banner.description}</p>
               <a href="${banner.link}" class="text-indigo-600 underline text-sm" target="_blank">바로가기</a>
-              <p class="text-xs text-gray-500 mt-1">${banner.active ? '✅ 활성화됨' : '⛔ 비활성화'}</p>
+              <p class="text-xs text-gray-500 mt-1">${getStatus(banner)}</p>
             </div>`;
           list.appendChild(li);
         });
