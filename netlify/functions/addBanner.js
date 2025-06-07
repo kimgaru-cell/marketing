@@ -22,12 +22,16 @@ exports.handler = async (event) => {
     };
   }
 
+  const activeRaw = data.active;
+  const active = activeRaw === true || activeRaw === 'true' || activeRaw === 'TRUE';
+
   const { error } = await supabase.from('banners').insert([{
     title: data.title,
     description: data.description,
     link: data.link,
     image_url: data.image_url || '',
-    active: !!data.active,
+    active: active, // 
+    created_at: new Date().toISOString(), 
   }]);
 
   if (error) {
