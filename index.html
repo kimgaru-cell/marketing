@@ -14,6 +14,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
     <style>
     html {
       scroll-behavior: smooth;
@@ -25,8 +27,16 @@
 <!-- 헤더 영역 -->
 <div id="menu-container"></div>
 
-    <!-- 배너 영역 -->
-    <div id="dynamicBanner" class="max-w-5xl mx-auto px-4 py-6"></div>
+    <!-- 배너 슬라이드 영역 -->
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <div class="swiper bannerSwiper">
+        <div class="swiper-wrapper" id="bannerSlides">
+          <!-- JS가 배너를 여기에 채워넣음 -->
+        </div>
+        <!-- 슬라이드 컨트롤 -->
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
 
     <!-- Hero 섹션 -->
     <section class="bg-gradient-to-b from-indigo-100 to-pink-50 py-20 text-center">
@@ -97,6 +107,7 @@
 <!-- JS 연결 -->
 <script src="public/js/loadMenu.js" defer></script>
 <script src="public/js/loadFooter.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
       document.querySelectorAll('a.scroll-down').forEach(anchor => {
@@ -288,22 +299,17 @@
 
     <script>
       async function loadDynamicBanners() {
-        const bannerContainer = document.getElementById('dynamicBanner');
+        const res = await fetch('/.netlify/functions/getBanners');
+        const banners = await res.json();
+        const slideContainer = document.getElementById('bannerSlides');
     
-        try {
-          const res = await fetch('/.netlify/functions/getBanners');
-          const banners = await res.json();
+        if (!banners.length) return;
     
-          if (!banners.length) {
-            bannerContainer.style.display = 'none';
-            return;
-          }
-    
-          const banner = banners[0];
-    
+        banners.forEach(banner => {
           const hasImage = banner.image_url && banner.image_url.trim() !== '';
-    
-          const html = `
+          const slide = document.createElement('div');
+          slide.className = 'swiper-slide';
+          slide.innerHTML = `
             <div class="bg-yellow-50 border border-yellow-300 rounded-lg shadow p-6 flex ${
               hasImage ? 'flex-col md:flex-row' : 'flex-col'
             } items-start md:items-center justify-between gap-4 hover:shadow-md transition">
@@ -322,11 +328,20 @@
               </a>
             </div>
           `;
+          slideContainer.appendChild(slide);
+        });
     
-          bannerContainer.innerHTML = html;
-        } catch (err) {
-          console.error('배너 로딩 실패:', err);
-        }
+        // ✅ Swiper 초기화
+        new Swiper('.bannerSwiper', {
+          loop: true,
+          autoplay: {
+            delay: 5000,
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+        });
       }
     
       document.addEventListener('DOMContentLoaded', loadDynamicBanners);
