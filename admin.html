@@ -15,6 +15,8 @@
       <input type="text" id="description" placeholder="설명" class="w-full border p-2 rounded" required />
       <input type="url" id="link" placeholder="클릭 시 이동할 링크" class="w-full border p-2 rounded" required />
       <input type="url" id="image_url" placeholder="(선택) 이미지 URL" class="w-full border p-2 rounded" />
+      <input type="datetime-local" id="start_date" class="w-full border p-2 rounded" />
+      <input type="datetime-local" id="end_date" class="w-full border p-2 rounded" />
       <label class="inline-flex items-center">
         <input type="checkbox" id="active" class="mr-2"> 활성화
       </label>
@@ -66,6 +68,8 @@
         link: document.getElementById('link').value,
         image_url: document.getElementById('image_url').value,
         active: document.getElementById('active').checked,
+        start_date: document.getElementById('start_date').value || null,
+        end_date: document.getElementById('end_date').value || null,
       };
     
       const res = await fetch('/.netlify/functions/addBanner', {
